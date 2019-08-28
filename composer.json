@@ -1,0 +1,38 @@
+{
+  "name": "srag/Libraries/CQRS",
+  "description": "Base Classes for a DDD / CQRS implementation in ILIAS.",
+  "type": "project",
+  "keywords": [
+    "ILIAS",
+    "Library"
+  ],
+  "homepage": "https://github.com/studer-raimann/CQRS",
+  "license": "GPL-3.0-only",
+  "authors": [
+    {
+      "name": "studer + raimann ag - Team Custom 1",
+      "email": "support-custom1@studer-raimann.ch",
+      "homepage": "https://studer-raimann.ch",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LCQRS"
+  },
+  "require": {
+    "php": ">=7.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "srag\\Libraries\\CQRS\\": "/src"
+    },
+    "classmap": [
+      "/src"
+    ]
+  },
+  "config": {
+    "classmap-authoritative": true,
+    "optimize-autoloader": true,
+    "sort-packages": true
+  }
+}

@@ -13,7 +13,7 @@ use ILIAS\AssessmentQuestion\CQRS\Aggregate\DomainObjectId;
  *
  * @author Theodor Truffer <tt@studer-raimann.ch>
  */
-class AbstractStoredEvent extends ActiveRecord
+abstract class AbstractStoredEvent extends ActiveRecord
 {
     /**
      * @var int

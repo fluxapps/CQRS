@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.1.0]
+- restructuring for packagist
+
 ## [1.0.0]
 - First version, contains: 
     * Aggregates

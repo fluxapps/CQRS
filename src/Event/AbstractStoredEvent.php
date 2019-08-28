@@ -1,6 +1,6 @@
 <?php
 
-namespace srag\Plugins\Catalogue\CQRS\Event;
+namespace srag\CQRS\CQRS\Event;
 
 use ActiveRecord;
 use ilDateTime;

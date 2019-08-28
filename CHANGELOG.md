@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.1.2]
+- fix in namespace
+
 ## [1.1.1]
 - changed namespace: srag\Libraries\CQRS\Command -> srag\CQRS\Command
 

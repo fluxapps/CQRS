@@ -1,5 +1,5 @@
 {
-  "name": "srag/Libraries/CQRS",
+  "name": "srag/CQRS",
   "description": "Base Classes for a DDD / CQRS implementation in ILIAS.",
   "type": "project",
   "keywords": [

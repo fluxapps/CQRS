@@ -1,11 +1,11 @@
 <?php
 
-namespace srag\Libraries\CQRS\Event;
+namespace srag\CQRS\Event;
 
 use ActiveRecord;
 use ilDateTime;
 use ilException;
-use srag\Libraries\CQRS\Aggregate\DomainObjectId;
+use srag\CQRS\Aggregate\DomainObjectId;
 
 /**
  * Class AbstractIlContainerStoredEvent

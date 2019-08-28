@@ -1,7 +1,7 @@
 <?php
 /* Copyright (c) 2019 - Martin Studer <ms@studer-raimann.ch> - Extended GPL, see LICENSE */
 
-namespace srag\Libraries\CQRS\Command;
+namespace srag\CQRS\Command;
 
 /**
  * Interface for commands.

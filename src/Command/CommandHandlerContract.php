@@ -2,7 +2,7 @@
 /* Copyright (c) 2019 - Martin Studer <ms@studer-raimann.ch> - Extended GPL, see LICENSE */
 declare(strict_types=1);
 
-namespace srag\Libraries\CQRS\Command;
+namespace srag\CQRS\Command;
 
 /**
  * Interface CommandHandlerContract

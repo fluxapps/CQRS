@@ -1,7 +1,7 @@
 <?php
 /* Copyright (c) 2019 Extended GPL, see docs/LICENSE */
 
-namespace srag\Libraries\CQRS\Aggregate;
+namespace srag\CQRS\Aggregate;
 
 use Exception;
 use Ramsey\Uuid\Uuid;

@@ -1,10 +1,10 @@
 <?php
 /* Copyright (c) 2019 Extended GPL, see docs/LICENSE */
 
-namespace srag\Libraries\CQRS\Event;
+namespace srag\CQRS\Event;
 
 use Exception;
-use srag\Libraries\CQRS\Aggregate\DomainObjectId;
+use srag\CQRS\Aggregate\DomainObjectId;
 
 /**
  * Class AggregateHistory

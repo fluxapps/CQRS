@@ -6,7 +6,7 @@ use ActiveRecord;
 use ilDateTime;
 use ilDateTimeException;
 use ilException;
-use srag\Libraries\CQRS\Aggregate\DomainObjectId;
+use srag\CQRS\Aggregate\DomainObjectId;
 
 /**
  * Class AbstractStoredEvent

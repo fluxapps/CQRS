@@ -1,6 +1,6 @@
 <?php
 
-namespace srag\Libraries\CQRS\Aggregate;
+namespace srag\CQRS\Aggregate;
 
 /**
  * Class DomainObjectId

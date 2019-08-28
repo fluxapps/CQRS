@@ -1,6 +1,6 @@
 <?php
 
-namespace srag\Libraries\CQRS\Event;
+namespace srag\CQRS\Event;
 
 /**
  * Class DomainEventSubscriber

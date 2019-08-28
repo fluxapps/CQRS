@@ -1,6 +1,6 @@
 <?php
 
-namespace srag\Libraries\CQRS\Command;
+namespace srag\CQRS\Command;
 
 use DomainException;
 

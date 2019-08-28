@@ -1,9 +1,9 @@
 <?php
 /* Copyright (c) 2019 Extended GPL, see docs/LICENSE */
 
-namespace srag\Libraries\CQRS\Event;
+namespace srag\CQRS\Event;
 
-use srag\Libraries\CQRS\Aggregate\AggregateRoot;
+use srag\CQRS\Aggregate\AggregateRoot;
 
 /**
  * Interface Projection

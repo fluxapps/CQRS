@@ -1,10 +1,10 @@
 <?php
 /* Copyright (c) 2019 Extended GPL, see docs/LICENSE */
 
-namespace srag\Libraries\CQRS\Aggregate;
+namespace srag\CQRS\Aggregate;
 
-use srag\Libraries\CQRS\Event\DomainEvent;
-use srag\Libraries\CQRS\Event\DomainEvents;
+use srag\CQRS\Event\DomainEvent;
+use srag\CQRS\Event\DomainEvents;
 
 /**
  * Class AbstractEventSourcedAggregateRoot

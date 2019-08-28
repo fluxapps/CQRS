@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.1.1]
+- changed namespace: srag\Libraries\CQRS\Command -> srag\CQRS\Command
+
 ## [1.1.0]
 - restructuring for packagist
 

@@ -93,5 +93,17 @@ abstract class AbstractDomainEvent implements DomainEvent {
 	}
 
 
-	public abstract function restoreEventBody(string $json_data);
-}
+    /**
+     * @param DomainObjectId $aggregate_id
+     * @param int            $initiating_user_id
+     * @param ilDateTime     $occured_on
+     * @param string         $event_body
+     *
+     * @return mixed
+     */
+    abstract public static function restore(
+        DomainObjectId $aggregate_id,
+        int $initiating_user_id,
+        ilDateTime $occured_on,
+        string $event_body
+    ) : AbstractDomainEvent;}

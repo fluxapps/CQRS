@@ -17,7 +17,7 @@ namespace srag\CQRS\Event;
 class DomainEvents {
 
 	/**
-	 * @var array
+	 * @var DomainEvent[]
 	 */
 	private $events;
 
@@ -39,7 +39,7 @@ class DomainEvents {
 
 
 	/**
-	 * @return array
+	 * @return DomainEvent[]
 	 */
 	public function getEvents(): array {
 		return $this->events;

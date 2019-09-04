@@ -31,23 +31,6 @@ abstract class AbstractDomainEvent implements DomainEvent {
 	protected $initiating_user_id;
 
 
-
-    /**
-     * AbstractDomainEvent constructor.
-     *
-     * @param DomainObjectId $aggregate_id
-     * @param int            $initiating_user_id
-     *
-     * @throws \ilDateTimeException
-     */
-	public function __construct(DomainObjectId $aggregate_id, int $initiating_user_id) {
-
-		$this->aggregate_id = $aggregate_id;
-		$this->occurred_on = new ilDateTime(time(), IL_CAL_UNIX);
-		$this->initiating_user_id = $initiating_user_id;
-	}
-
-
 	/**
 	 * The Aggregate this event belongs to.
 	 *
@@ -95,7 +78,7 @@ abstract class AbstractDomainEvent implements DomainEvent {
     /**
      * @param DomainObjectId $aggregate_id
      * @param int            $initiating_user_id
-     * @param ilDateTime     $occured_on
+     * @param ilDateTime     $occurred_on
      * @param string         $event_body
      *
      * @return mixed
@@ -103,6 +86,8 @@ abstract class AbstractDomainEvent implements DomainEvent {
     abstract public static function restore(
         DomainObjectId $aggregate_id,
         int $initiating_user_id,
-        ilDateTime $occured_on,
+        ilDateTime $occurred_on,
         string $event_body
-    ) : AbstractDomainEvent;}
+    ) : AbstractDomainEvent;
+
+}

@@ -21,4 +21,15 @@ abstract class AbstractCommand implements CommandContract {
 	public function __construct(int $issuing_user_id) {
 		$this->issuing_user_id = $issuing_user_id;
 	}
+
+
+    /**
+     * @return int
+     */
+    public function getIssuingUserId() : int
+    {
+        return $this->issuing_user_id;
+    }
+
+
 }

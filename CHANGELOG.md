@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.3]
+- small adjustments
+- changes in domain event
+
 ## [1.1.2]
 - fix in namespace
 

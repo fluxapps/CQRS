@@ -23,7 +23,10 @@ abstract class AbstractValueObject implements JsonSerializable {
      * @param AbstractValueObject $other
      * @return bool
      */
-    abstract function equals(AbstractValueObject $other) : bool;
+    function equals(AbstractValueObject $other) : bool
+    {
+        return $this->jsonSerialize() == $other->jsonSerialize();
+    }
 
     /**
      * Compares if two nullable ValueObjects are equal and returns true if they are
@@ -63,7 +66,12 @@ abstract class AbstractValueObject implements JsonSerializable {
 		return $vars;
 	}
 
-	public static function deserialize(?string $data) : ?AbstractValueObject {
+
+    /**
+     * @param string|null $data
+     *
+     * @return AbstractValueObject|null
+     */public static function deserialize(?string $data) : ?AbstractValueObject {
 		if ($data === null) {
 			return null;
 		}
@@ -81,7 +89,11 @@ abstract class AbstractValueObject implements JsonSerializable {
 		return $object;
 	}
 
-	private function setFromStdClass(StdClass $data) {
+
+    /**
+     * @param stdClass $data
+     */
+    private function setFromStdClass(StdClass $data) {
 		foreach ($data as $property=>$value) {
 			if ($value instanceof StdClass)
 			{

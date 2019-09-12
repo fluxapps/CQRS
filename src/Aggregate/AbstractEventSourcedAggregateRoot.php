@@ -71,4 +71,19 @@ abstract class AbstractEventSourcedAggregateRoot implements AggregateRoot, Recor
 
 
 	abstract function getAggregateId(): DomainObjectId;
+
+    /**
+     * @param DomainEvents $event_history
+     *
+     * @return AggregateRoot
+     */
+    public static function reconstitute(DomainEvents $event_history) : AggregateRoot
+    {
+        $aggregate_root = new static();
+        foreach ($event_history->getEvents() as $event) {
+            $aggregate_root->applyEvent($event);
+        }
+
+        return $aggregate_root;
+    }
 }

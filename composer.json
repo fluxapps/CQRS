@@ -20,7 +20,8 @@
     "issues": "https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LCQRS"
   },
   "require": {
-    "php": ">=7.2"
+    "php": ">=7.2",
+    "ramsey/uuid": "^3.8"
   },
   "autoload": {
     "psr-4": {

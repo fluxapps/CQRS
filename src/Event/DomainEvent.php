@@ -49,4 +49,19 @@ interface DomainEvent {
 	 * @return string
 	 */
 	public function getEventBody(): string;
+
+    /**
+     * @param DomainObjectId $aggregate_id
+     * @param int            $initiating_user_id
+     * @param ilDateTime     $occurred_on
+     * @param string         $event_body
+     *
+     * @return mixed
+     */
+    public static function restore(
+        DomainObjectId $aggregate_id,
+        int $initiating_user_id,
+        ilDateTime $occurred_on,
+        string $event_body
+    ) : AbstractDomainEvent;
 }

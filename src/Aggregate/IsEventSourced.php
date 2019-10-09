@@ -10,6 +10,11 @@ use srag\CQRS\Event\DomainEvents;
  */
 interface IsEventSourced {
 
+    /**
+     * @param DomainEvents $event_history
+     *
+     * @return AggregateRoot
+     */
 	public static function reconstitute(DomainEvents $event_history): AggregateRoot;
 }
  

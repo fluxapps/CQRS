@@ -24,12 +24,18 @@ abstract class AbstractEventSourcedAggregateRoot implements AggregateRoot, Recor
 	private $recordedEvents;
 
 
-	protected function __construct() {
+    /**
+     * AbstractEventSourcedAggregateRoot constructor.
+     */
+    protected function __construct() {
 		$this->recordedEvents = new DomainEvents();
 	}
 
 
-	protected function ExecuteEvent(DomainEvent $event) {
+    /**
+     * @param DomainEvent $event
+     */
+    protected function ExecuteEvent(DomainEvent $event) {
 		// apply results of event to class, most events should result in some changes
 		$this->applyEvent($event);
 
@@ -38,12 +44,18 @@ abstract class AbstractEventSourcedAggregateRoot implements AggregateRoot, Recor
 	}
 
 
-	protected function recordEvent(DomainEvent $event) {
+    /**
+     * @param DomainEvent $event
+     */
+    protected function recordEvent(DomainEvent $event) {
 		$this->recordedEvents->addEvent($event);
 	}
 
 
-	protected function applyEvent(DomainEvent $event) {
+    /**
+     * @param DomainEvent $event
+     */
+    protected function applyEvent(DomainEvent $event) {
 		$action_handler = $this->getHandlerName($event);
 
 		if (method_exists($this, $action_handler)) {
@@ -52,7 +64,11 @@ abstract class AbstractEventSourcedAggregateRoot implements AggregateRoot, Recor
 	}
 
 
-	private function getHandlerName(DomainEvent $event) {
+    /**
+     * @param DomainEvent $event
+     *
+     * @return string
+     */private function getHandlerName(DomainEvent $event) {
 		return self::APPLY_PREFIX . join('', array_slice(explode('\\', get_class($event)), - 1));
 	}
 
@@ -65,12 +81,18 @@ abstract class AbstractEventSourcedAggregateRoot implements AggregateRoot, Recor
 	}
 
 
-	public function clearRecordedEvents(): void {
+    /**
+     *
+     */
+    public function clearRecordedEvents(): void {
 		$this->recordedEvents = new DomainEvents();
 	}
 
 
-	abstract function getAggregateId(): DomainObjectId;
+    /**
+     * @return DomainObjectId
+     */
+    abstract function getAggregateId(): DomainObjectId;
 
     /**
      * @param DomainEvents $event_history

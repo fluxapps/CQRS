@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.1.4]
+- dependency to ramsey/uuid
+- added missing 'restore' method in DomainEvent interface
+- phpdocs
+
 ## [1.1.3]
 - small adjustments
 - changes in domain event

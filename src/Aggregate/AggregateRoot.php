@@ -14,5 +14,8 @@ namespace srag\CQRS\Aggregate;
  */
 interface AggregateRoot {
 
+    /**
+     * @return DomainObjectId
+     */
 	public function getAggregateId(): DomainObjectId;
 }

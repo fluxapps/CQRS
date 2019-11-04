@@ -11,24 +11,44 @@ namespace srag\CQRS\Aggregate;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-class DomainObjectId {
-	/**
-	 * @var string
-	 */
-	private $id;
+class DomainObjectId
+{
+
+    /**
+     * @var string
+     */
+    private $id;
 
 
-	public function __construct(string $id = null)
-	{
-		$this->id = $id ?: Guid::create();
-	}
+    /**
+     * DomainObjectId constructor.
+     *
+     * @param string|null $id
+     *
+     * @throws \Exception
+     */
+    public function __construct(string $id = null)
+    {
+        $this->id = $id ?: Guid::create();
+    }
 
-	public function getId(): string {
-		return $this->id;
-	}
+
+    /**
+     * @return string
+     */
+    public function getId() : string
+    {
+        return $this->id;
+    }
 
 
-	public function equals(DomainObjectId $anId) : bool{
-		return $this->getId() === $anId->getId();
-	}
+    /**
+     * @param DomainObjectId $anId
+     *
+     * @return bool
+     */
+    public function equals(DomainObjectId $anId) : bool
+    {
+        return $this->getId() === $anId->getId();
+    }
 }

@@ -14,5 +14,8 @@ namespace srag\CQRS\Aggregate;
  */
 abstract class AbstractAggregateRoot implements AggregateRoot {
 
+    /**
+     * @return DomainObjectId
+     */
 	abstract public function getAggregateId(): DomainObjectId;
 }

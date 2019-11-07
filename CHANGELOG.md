@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.1.5]
+- added event publisher and subscriber
+- major changes to abstract value object
+- some small refactorings
+
 ## [1.1.4]
 - dependency to ramsey/uuid
 - added missing 'restore' method in DomainEvent interface

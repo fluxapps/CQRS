@@ -2,6 +2,8 @@
 
 namespace srag\CQRS\Aggregate;
 
+use ilDate;
+use ilDateTime;
 use JsonSerializable;
 use stdClass;
 
@@ -16,6 +18,13 @@ use stdClass;
  */
 abstract class AbstractValueObject implements JsonSerializable {
 	const VAR_CLASSNAME = "avo_class_name";
+
+
+    /**
+     * AbstractValueObject constructor.
+     */
+    protected function __construct() { }
+
 
     /**
      * Compares ValueObjects to each other returns true if they are the same
@@ -61,32 +70,56 @@ abstract class AbstractValueObject implements JsonSerializable {
 	 * @since 5.4.0
 	 */
 	public function jsonSerialize() {
+	    $json = [];
 		$vars = get_object_vars($this);
-		$vars[self::VAR_CLASSNAME] = get_called_class();
-		return $vars;
+        foreach ($vars as $key => $var) {
+            $json[$key] = $this->sleep($key, $var) ?: $var;
+		}
+		$json[self::VAR_CLASSNAME] = get_called_class();
+		return $json;
 	}
+
+
+    /**
+     * @return string
+     */
+	public function serialize() : string
+    {
+        return json_encode($this->jsonSerialize());
+    }
+
+    /**
+     * @param stdClass|null $std_data
+     *
+     * @return AbstractValueObject|null
+     */
+	public static function jsonDeserialize(?stdClass $std_data) : ?AbstractValueObject
+    {
+        if ($std_data === null) {
+            return null;
+        }
+
+        /** @var AbstractValueObject $object */
+        $object = new $std_data->{self::VAR_CLASSNAME}();
+        $object->setFromStdClass($std_data);
+
+        return $object;
+    }
 
 
     /**
      * @param string|null $data
      *
      * @return AbstractValueObject|null
-     */public static function deserialize(?string $data) : ?AbstractValueObject {
+     */
+    public static function deserialize(?string $data) : ?AbstractValueObject {
 		if ($data === null) {
 			return null;
 		}
 
 		$std_data = json_decode($data);
 
-		if ($std_data === null) {
-			return null;
-		}
-
-		/** @var AbstractValueObject $object */
-		$object = new $std_data->{self::VAR_CLASSNAME}();
-		$object->setFromStdClass($std_data);
-
-		return $object;
+		return self::jsonDeserialize($std_data);
 	}
 
 
@@ -95,15 +128,38 @@ abstract class AbstractValueObject implements JsonSerializable {
      */
     private function setFromStdClass(StdClass $data) {
 		foreach ($data as $property=>$value) {
-			if ($value instanceof StdClass)
-			{
-				/** @var AbstractValueObject $object */
-				$object = new $value->{self::VAR_CLASSNAME}();
-				$object->setFromStdClass($value);
-				$this->$property = $object;
-			} else {
-				$this->$property = $value;
-			}
+		    if ($property != self::VAR_CLASSNAME) {
+                $this->$property = $this->wakeUp($property, $value) ?: $value;
+            }
 		}
 	}
+
+
+    /**
+     * @param $field_name
+     *
+     * @param $field_value
+     *
+     * @return mixed
+     */
+    protected function sleep($field_name, $field_value)
+    {
+        return $field_value instanceof AbstractValueObject ? $field_value->jsonSerialize() : null;
+    }
+
+
+    /**
+     * @param $field_name
+     * @param $field_value
+     *
+     * @return mixed
+     */
+    protected function wakeUp($field_name, $field_value)
+    {
+        if (($field_value instanceof StdClass) && isset($field_value->{self::VAR_CLASSNAME})) {
+            $class_name = $field_value->{self::VAR_CLASSNAME};
+            return call_user_func([$class_name, 'jsonDeserialize'], $field_value);
+        }
+        return null;
+    }
 }

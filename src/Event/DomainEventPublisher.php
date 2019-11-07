@@ -11,28 +11,50 @@ namespace srag\CQRS\Event;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-interface DomainEventPublisher {
+class DomainEventPublisher {
+
+    protected $subscribers;
+    protected static $instance = null;
 
 	/**
 	 * @return DomainEventPublisher
 	 */
-	public static function getInstance();
+	public static function getInstance() : DomainEventPublisher
+    {
+        if (null === static::$instance) {
+            static::$instance = new static();
+        }
+        return static::$instance;
+    }
 
 
 	/**
 	 * DomainEventPublisher constructor.
 	 */
-	public function __construct();
+	public function __construct()
+    {
+        $this->subscribers = [];
+    }
 
 
 	/**
 	 * @param DomainEventSubscriber $aDomainEventSubscriber
 	 */
-	public function subscribe(DomainEventSubscriber $aDomainEventSubscriber);
+	public function subscribe(DomainEventSubscriber $aDomainEventSubscriber) : void
+    {
+        $this->subscribers[] = $aDomainEventSubscriber;
+    }
 
 
 	/**
 	 * @param DomainEvent $anEvent
 	 */
-	public function publish(DomainEvent $anEvent);
+	public function publish(DomainEvent $anEvent) : void
+    {
+        foreach ($this->subscribers as $aSubscriber) {
+            if ($aSubscriber->isSubscribedTo($anEvent)) {
+                $aSubscriber->handle($anEvent);
+            }
+        }
+    }
 }

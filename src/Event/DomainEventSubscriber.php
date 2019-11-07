@@ -16,7 +16,7 @@ interface DomainEventSubscriber {
 	/**
 	 * @param DomainEvent $aDomainEvent
 	 */
-	public function handle($aDomainEvent);
+	public function handle($aDomainEvent) : void;
 
 
 	/**
@@ -24,5 +24,5 @@ interface DomainEventSubscriber {
 	 *
 	 * @return bool
 	 */
-	public function isSubscribedTo($aDomainEvent);
+	public function isSubscribedTo($aDomainEvent) : bool;
 }

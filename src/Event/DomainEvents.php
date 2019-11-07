@@ -38,6 +38,16 @@ class DomainEvents {
 	}
 
 
+    /**
+     * @param DomainEvents $events
+     */
+	public function addEvents(DomainEvents $events) {
+        foreach ($events->getEvents() as $event) {
+            $this->addEvent($event);
+	    }
+    }
+
+
 	/**
 	 * @return DomainEvent[]
 	 */

@@ -28,4 +28,12 @@ interface EventStore {
 	 * @return DomainEvents
 	 */
 	public function getAggregateHistoryFor(DomainObjectId $id): DomainEvents;
+
+
+    /**
+     * @param EventID $from_position
+     *
+     * @return DomainEvents
+     */
+	public function getEventStream(?EventID $from_position) : DomainEvents;
 }

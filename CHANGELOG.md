@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.0]
+- Introduced EventID
+- Introduced Projections
+
 ## [1.1.5]
 - added event publisher and subscriber
 - major changes to abstract value object

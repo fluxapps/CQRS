@@ -3,7 +3,7 @@
 namespace srag\CQRS\Projection\ValueObjects;
 
 use Exception;
-use srag\CQRS\Catalogue\Aggregate\AbstractValueObject;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class ProjectorStatus

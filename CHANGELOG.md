@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.2.1]
+- bugfix (wrong namespace)
+
 ## [1.2.0]
 - Introduced EventID
 - Introduced Projections

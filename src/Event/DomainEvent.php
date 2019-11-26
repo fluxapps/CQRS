@@ -19,6 +19,11 @@ use srag\CQRS\Aggregate\DomainObjectId;
  */
 interface DomainEvent {
 
+    /**
+     * @return EventID
+     */
+    public function getEventId(): EventID;
+
 	/**
 	 * The Aggregate this event belongs to.
 	 *
@@ -50,7 +55,9 @@ interface DomainEvent {
 	 */
 	public function getEventBody(): string;
 
+
     /**
+     * @param EventID        $event_id
      * @param DomainObjectId $aggregate_id
      * @param int            $initiating_user_id
      * @param ilDateTime     $occurred_on
@@ -59,6 +66,7 @@ interface DomainEvent {
      * @return mixed
      */
     public static function restore(
+        EventID $event_id,
         DomainObjectId $aggregate_id,
         int $initiating_user_id,
         ilDateTime $occurred_on,

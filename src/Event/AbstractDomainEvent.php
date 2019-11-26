@@ -3,6 +3,7 @@
 
 namespace srag\CQRS\Event;
 
+use Exception;
 use ilDateTime;
 use srag\CQRS\Aggregate\DomainObjectId;
 
@@ -18,6 +19,10 @@ use srag\CQRS\Aggregate\DomainObjectId;
 abstract class AbstractDomainEvent implements DomainEvent
 {
 
+    /**
+     * @var EventID
+     */
+    protected $event_id;
     /**
      * @var DomainObjectId
      */
@@ -44,6 +49,15 @@ abstract class AbstractDomainEvent implements DomainEvent
         $this->aggregate_id = $aggregate_id;
         $this->occurred_on = $occurred_on;
         $this->initiating_user_id = $initiating_user_id;
+    }
+
+
+    /**
+     * @return EventID
+     */
+    public function getEventId() : EventID
+    {
+        return $this->event_id;
     }
 
 
@@ -98,20 +112,24 @@ abstract class AbstractDomainEvent implements DomainEvent
 
 
     /**
+     * @param EventID        $event_id
      * @param DomainObjectId $aggregate_id
      * @param int            $initiating_user_id
      * @param ilDateTime     $occurred_on
      * @param string         $event_body
      *
      * @return mixed
+     * @throws Exception
      */
     public static function restore(
+        EventID $event_id,
         DomainObjectId $aggregate_id,
         int $initiating_user_id,
         ilDateTime $occurred_on,
         string $event_body
     ) : AbstractDomainEvent {
         $restored = new static($aggregate_id, $occurred_on, $initiating_user_id);
+        $restored->event_id = $event_id;
         $restored->restoreEventBody($event_body);
         return $restored;
     }

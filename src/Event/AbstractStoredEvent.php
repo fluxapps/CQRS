@@ -7,6 +7,7 @@ use ilDateTime;
 use ilDateTimeException;
 use ilException;
 use srag\CQRS\Aggregate\DomainObjectId;
+use srag\CQRS\Event\EventID;
 
 /**
  * Class AbstractStoredEvent
@@ -15,6 +16,7 @@ use srag\CQRS\Aggregate\DomainObjectId;
  */
 abstract class AbstractStoredEvent extends ActiveRecord
 {
+
     /**
      * @var int
      *
@@ -24,6 +26,16 @@ abstract class AbstractStoredEvent extends ActiveRecord
      * @con_fieldtype  integer
      * @con_length     8
      * @con_sequence   true
+     */
+    protected $id;
+    /**
+     * @var EventID
+     *
+     * @con_has_field  true
+     * @con_fieldtype  text
+     * @con_index      true
+     * @con_is_notnull true
+     * @con_length     200
      */
     protected $event_id;
     /**
@@ -72,30 +84,70 @@ abstract class AbstractStoredEvent extends ActiveRecord
      * @con_is_notnull true
      */
     protected $event_body = '';
+    /**
+     * @var string
+     *
+     * @con_has_field  true
+     * @con_fieldtype  text
+     * @con_length     256
+     * @con_is_notnull true
+     */
+    protected $event_class;
 
 
     /**
      * Store event data.
      *
-     * @param DomainObjectId     $aggregate_id
-     * @param string     $event_name
-     * @param ilDateTime $occurred_on
-     * @param int        $initiating_user_id
-     * @param string     $event_body
+     * @param EventID        $event_id
+     * @param DomainObjectId $aggregate_id
+     * @param string         $event_name
+     * @param ilDateTime     $occurred_on
+     * @param int            $initiating_user_id
+     * @param string         $event_body
+     * @param string         $event_class
      */
-    public function setEventData(DomainObjectId $aggregate_id, string $event_name, ilDateTime $occurred_on, int $initiating_user_id, string $event_body) {
+    public function setEventData(
+        EventID $event_id,
+        DomainObjectId $aggregate_id,
+        string $event_name,
+        ilDateTime $occurred_on,
+        int $initiating_user_id,
+        string $event_body,
+        string $event_class
+) : void {
+        $this->event_id = $event_id;
         $this->aggregate_id = $aggregate_id;
         $this->event_name = $event_name;
         $this->occurred_on = $occurred_on;
         $this->initiating_user_id = $initiating_user_id;
         $this->event_body = $event_body;
+        $this->event_class = $event_class;
     }
 
 
     /**
      * @return int
      */
-    public function getEventId(): int {
+    public function getId() : int
+    {
+        return $this->id;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getEventClass() : string
+    {
+        return $this->event_class;
+    }
+
+
+    /**
+     * @return EventID
+     */
+    public function getEventId() : EventID
+    {
         return $this->event_id;
     }
 
@@ -103,7 +155,8 @@ abstract class AbstractStoredEvent extends ActiveRecord
     /**
      * @return DomainObjectId
      */
-    public function getAggregateId(): DomainObjectId {
+    public function getAggregateId() : DomainObjectId
+    {
         return $this->aggregate_id;
     }
 
@@ -111,7 +164,8 @@ abstract class AbstractStoredEvent extends ActiveRecord
     /**
      * @return string
      */
-    public function getEventName(): string {
+    public function getEventName() : string
+    {
         return $this->event_name;
     }
 
@@ -119,14 +173,17 @@ abstract class AbstractStoredEvent extends ActiveRecord
     /**
      * @return ilDateTime
      */
-    public function getOccurredOn(): ilDateTime {
+    public function getOccurredOn() : ilDateTime
+    {
         return $this->occurred_on;
     }
+
 
     /**
      * @return int
      */
-    public function getInitiatingUserId(): int {
+    public function getInitiatingUserId() : int
+    {
         return $this->initiating_user_id;
     }
 
@@ -134,7 +191,8 @@ abstract class AbstractStoredEvent extends ActiveRecord
     /**
      * @return string
      */
-    public function getEventBody(): string {
+    public function getEventBody() : string
+    {
         return $this->event_body;
     }
 
@@ -147,6 +205,8 @@ abstract class AbstractStoredEvent extends ActiveRecord
     public function sleep($field_name)
     {
         switch ($field_name) {
+            case 'event_id':
+                return $this->event_id->getId();
             case 'occurred_on':
                 return $this->occurred_on->get(IL_CAL_DATETIME);
             case 'aggregate_id':
@@ -167,6 +227,8 @@ abstract class AbstractStoredEvent extends ActiveRecord
     public function wakeUp($field_name, $field_value)
     {
         switch ($field_name) {
+            case 'event_id':
+                return new EventID($field_value);
             case 'occurred_on':
                 return new ilDateTime($field_value, IL_CAL_DATETIME);
             case 'aggregate_id':
@@ -184,7 +246,8 @@ abstract class AbstractStoredEvent extends ActiveRecord
     /**
      *
      */
-    public function create() {
+    public function create()
+    {
         parent::create();
     }
 
@@ -195,7 +258,8 @@ abstract class AbstractStoredEvent extends ActiveRecord
     /**
      * @throws ilException
      */
-    public function store() {
+    public function store()
+    {
         throw new ilException("Store is not supported - It's only possible to add new records to this store!");
     }
 
@@ -203,7 +267,8 @@ abstract class AbstractStoredEvent extends ActiveRecord
     /**
      * @throws ilException
      */
-    public function update() {
+    public function update()
+    {
         throw new ilException("Update is not supported - It's only possible to add new records to this store!");
     }
 
@@ -211,7 +276,8 @@ abstract class AbstractStoredEvent extends ActiveRecord
     /**
      * @throws ilException
      */
-    public function delete() {
+    public function delete()
+    {
         throw new ilException("Delete is not supported - It's only possible to add new records to this store!");
     }
 
@@ -219,7 +285,8 @@ abstract class AbstractStoredEvent extends ActiveRecord
     /**
      * @throws ilException
      */
-    public function save() {
+    public function save()
+    {
         throw new ilException("Save is not supported - It's only possible to add new records to this store!");
     }
 }

@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.2.3]
+- made ledgers occurred_at nullable
+
 ## [1.2.2]
 - added missing namespace in ilDBPositionLedger
 

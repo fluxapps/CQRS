@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.2.2]
+- added missing namespace in ilDBPositionLedger
+
 ## [1.2.1]
 - bugfix (wrong namespace)
 

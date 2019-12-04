@@ -59,7 +59,6 @@ class LedgerAR extends ActiveRecord
      * @var ilDateTime
      *
      * @con_has_field  true
-     * @con_is_notnull true
      * @con_fieldtype  timestamp
      */
     public $occurred_at;

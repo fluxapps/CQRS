@@ -79,6 +79,17 @@ abstract class AbstractValueObject implements JsonSerializable {
 		return $json;
 	}
 
+	/**
+	 * @param $field_name
+	 *
+	 * @param $field_value
+	 *
+	 * @return mixed
+	 */
+	protected function sleep($field_name, $field_value)
+	{
+	    return $field_value instanceof AbstractValueObject ? $field_value->jsonSerialize() : null;
+	}
 
     /**
      * @return string
@@ -88,78 +99,40 @@ abstract class AbstractValueObject implements JsonSerializable {
         return json_encode($this->jsonSerialize());
     }
 
-    /**
-     * @param stdClass|null $std_data
-     *
-     * @return AbstractValueObject|null
-     */
-	public static function jsonDeserialize(?stdClass $std_data) : ?AbstractValueObject
-    {
-        if ($std_data === null) {
+    public static function deserialize(?string $data) : ?AbstractValueObject {
+        if ($data === null) {
             return null;
         }
-
-        /** @var AbstractValueObject $object */
-        $object = new $std_data->{self::VAR_CLASSNAME}();
-        $object->setFromStdClass($std_data);
-
-        return $object;
-    }
-
-
-    /**
-     * @param string|null $data
-     *
-     * @return AbstractValueObject|null
-     */
-    public static function deserialize(?string $data) : ?AbstractValueObject {
-		if ($data === null) {
-			return null;
-		}
-
-		$std_data = json_decode($data);
-
-		return self::jsonDeserialize($std_data);
-	}
-
-
-    /**
-     * @param stdClass $data
-     */
-    private function setFromStdClass(StdClass $data) {
-		foreach ($data as $property=>$value) {
-		    if ($property != self::VAR_CLASSNAME) {
-                $this->$property = $this->wakeUp($property, $value) ?: $value;
-            }
-		}
-	}
-
-
-    /**
-     * @param $field_name
-     *
-     * @param $field_value
-     *
-     * @return mixed
-     */
-    protected function sleep($field_name, $field_value)
-    {
-        return $field_value instanceof AbstractValueObject ? $field_value->jsonSerialize() : null;
-    }
-
-
-    /**
-     * @param $field_name
-     * @param $field_value
-     *
-     * @return mixed
-     */
-    protected function wakeUp($field_name, $field_value)
-    {
-        if (($field_value instanceof StdClass) && isset($field_value->{self::VAR_CLASSNAME})) {
-            $class_name = $field_value->{self::VAR_CLASSNAME};
-            return call_user_func([$class_name, 'jsonDeserialize'], $field_value);
+        
+        $data_array = json_decode($data, true);
+        
+        if ($data_array === null) {
+            return null;
         }
-        return null;
+        
+        return self::createFromArray($data_array);
+    }
+    
+    private static function createFromArray(array $data) {
+        
+        if (array_key_exists(self::VAR_CLASSNAME, $data))  {
+            /** @var AbstractValueObject $object */
+            $object = new $data[self::VAR_CLASSNAME]();
+            
+            foreach ($data as $key=>$value) {
+                $object->$key = is_array($value) ? self::createFromArray($value) : $value;
+            }
+            
+            return $object;
+        }
+        else {
+            foreach ($data as $key=>$value) {
+                if (is_array($value)) {
+                    $data[$key] = self::createFromArray($value);
+                }
+            }
+            
+            return $data;
+        }
     }
 }

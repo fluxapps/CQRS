@@ -29,6 +29,21 @@ abstract class AbstractEventSourcedAggregateRepository implements AggregateRepos
      */
     private $has_cache = false;
 
+    /**
+     * @var AbstractEventSourcedAggregateRepository
+     */
+    private static $instance;
+    /**
+     * @return AbstractEventSourcedAggregateRepository
+     */
+    public static function getInstance() {
+        if (self::$instance === null) {
+            $class_name = get_called_class();
+            self::$instance = new $class_name();
+        }
+        
+        return self::$instance;
+    }
 
     /**
      * AbstractEventSourcedAggregateRepository constructor.
@@ -103,13 +118,6 @@ abstract class AbstractEventSourcedAggregateRepository implements AggregateRepos
     {
         //Virtual Method
     }
-
-
-    /**
-     * @return mixed
-     */
-    public abstract static function getInstance();
-
 
     /**
      * @return EventStore

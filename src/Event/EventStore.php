@@ -6,7 +6,7 @@ namespace srag\CQRS\Event;
 use srag\CQRS\Aggregate\DomainObjectId;
 
 /**
- * Interface EventStore
+ * Abstract Class EventStore
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  * @author  Adrian Lüthi <al@studer-raimann.ch>
@@ -14,12 +14,12 @@ use srag\CQRS\Aggregate\DomainObjectId;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-interface EventStore {
+abstract class EventStore {
 
 	/**
 	 * @param DomainEvents $events
 	 */
-	public function commit(DomainEvents $events);
+	public abstract function commit(DomainEvents $events);
 
 
 	/**
@@ -27,7 +27,7 @@ interface EventStore {
 	 *
 	 * @return DomainEvents
 	 */
-	public function getAggregateHistoryFor(DomainObjectId $id): DomainEvents;
+	public abstract function getAggregateHistoryFor(DomainObjectId $id): DomainEvents;
 
 
     /**
@@ -35,5 +35,5 @@ interface EventStore {
      *
      * @return DomainEvents
      */
-	public function getEventStream(?EventID $from_position) : DomainEvents;
+	public abstract function getEventStream(?EventID $from_position) : DomainEvents;
 }

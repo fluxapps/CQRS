@@ -78,7 +78,10 @@ abstract class AbstractDomainEvent implements DomainEvent
      * Add a Constant EVENT_NAME to your class: Name it: [aggregate].[event]
      * e.g. 'question.created'
      */
-    public abstract function getEventName() : string;
+    public function getEventName() : string
+    {
+        return get_called_class();
+    }
 
 
     /**

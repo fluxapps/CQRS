@@ -5,6 +5,9 @@ namespace srag\CQRS\Aggregate;
 
 use srag\CQRS\Event\DomainEvent;
 use srag\CQRS\Event\DomainEvents;
+use srag\CQRS\Event\Standard\AggregateCreatedEvent;
+use srag\CQRS\Exception\CQRSException;
+use srag\CQRS\Event\Standard\AggregateDeletedEvent;
 
 /**
  * Class AbstractEventSourcedAggregateRoot
@@ -18,12 +21,22 @@ use srag\CQRS\Event\DomainEvents;
 abstract class AbstractEventSourcedAggregateRoot implements AggregateRoot, RecordsEvents, IsEventSourced {
 
 	const APPLY_PREFIX = 'apply';
+	
+	/**
+	 * @var DomainObjectId
+	 */
+	private $aggregate_id;
+	
 	/**
 	 * @var DomainEvents
 	 */
 	private $recordedEvents;
 
-
+	/**
+	 * @var bool
+	 */
+    private $is_deleted;
+	
     /**
      * AbstractEventSourcedAggregateRoot constructor.
      */
@@ -36,6 +49,10 @@ abstract class AbstractEventSourcedAggregateRoot implements AggregateRoot, Recor
      * @param DomainEvent $event
      */
     protected function ExecuteEvent(DomainEvent $event) {
+        if ($this->is_deleted) {
+            return new CQRSException("Action on deleted Aggregate not allowed");
+        }
+        
 		// apply results of event to class, most events should result in some changes
 		$this->applyEvent($event);
 
@@ -63,6 +80,19 @@ abstract class AbstractEventSourcedAggregateRoot implements AggregateRoot, Recor
 		}
 	}
 
+	/**
+	 * @param AggregateCreatedEvent $event
+	 */
+	protected function applyAggregateCreatedEvent(DomainEvent $event) {
+	    $this->aggregate_id = $event->getAggregateId();
+	}
+	
+	/**
+	 * @param AggregateDeletedEvent $event
+	 */
+	protected function appliAggregateDeletedEvent(DomainEvent $event) {
+	    $this->is_deleted = true;
+	}
 
     /**
      * @param DomainEvent $event
@@ -92,7 +122,9 @@ abstract class AbstractEventSourcedAggregateRoot implements AggregateRoot, Recor
     /**
      * @return DomainObjectId
      */
-    abstract function getAggregateId(): DomainObjectId;
+	function getAggregateId(): DomainObjectId {
+	    return $this->aggregate_id;
+	}
 
     /**
      * @param DomainEvents $event_history

@@ -22,10 +22,11 @@ abstract class AbstractEventSourcedAggregateRoot implements AggregateRoot, Recor
 
 	const APPLY_PREFIX = 'apply';
 	
+	//TODO private me
 	/**
 	 * @var DomainObjectId
 	 */
-	private $aggregate_id;
+	protected $aggregate_id;
 	
 	/**
 	 * @var DomainEvents

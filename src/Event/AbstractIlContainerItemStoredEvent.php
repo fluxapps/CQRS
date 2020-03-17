@@ -4,7 +4,6 @@ namespace srag\CQRS\Event;
 
 use ilDateTime;
 use srag\CQRS\Aggregate\DomainObjectId;
-use srag\CQRS\CQRS\Event\AbstractStoredEvent;
 
 /**
  * Class AbstractIlContainerItemStoredEvent

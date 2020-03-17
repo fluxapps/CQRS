@@ -4,6 +4,7 @@ namespace srag\CQRS\Event;
 
 use ActiveRecord;
 use ilDateTime;
+use ilDateTimeException;
 use ilException;
 use srag\CQRS\Aggregate\DomainObjectId;
 

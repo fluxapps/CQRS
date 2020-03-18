@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.2.4]
+- method to fix projector position
+
 ## [1.2.3]
 - made ledgers occurred_at nullable
 

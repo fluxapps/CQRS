@@ -120,6 +120,23 @@ class ProjectorPosition extends AbstractValueObject
 
 
     /**
+     *  Use when a broken projector was fixed
+     *
+     * @return ProjectorPosition
+     * @throws Exception
+     */
+    public function fixed() : ProjectorPosition
+    {
+        return new ProjectorPosition(
+            $this->projector,
+            $this->processed_events,
+            new ilDateTime(time(), IL_CAL_UNIX),
+            $this->last_position,
+            ProjectorStatus::working()
+        );
+    }
+
+    /**
      * @return ProjectorPosition
      * @throws Exception
      */

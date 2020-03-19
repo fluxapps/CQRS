@@ -32,17 +32,21 @@ abstract class AbstractEventSourcedAggregateRepository implements AggregateRepos
     /**
      * @var AbstractEventSourcedAggregateRepository
      */
-    private static $instance;
+    private static $instances;
     /**
      * @return AbstractEventSourcedAggregateRepository
      */
     public static function getInstance() {
-        if (self::$instance === null) {
-            $class_name = get_called_class();
-            self::$instance = new $class_name();
+        if (self::$instances === null) {
+            self::$instances = [];
         }
         
-        return self::$instance;
+        $class_name = get_called_class();
+        if (self::$instances[$class_name] === null) {
+            self::$instances[$class_name] = new $class_name();
+        }
+        
+        return self::$instances[$class_name];
     }
 
     /**

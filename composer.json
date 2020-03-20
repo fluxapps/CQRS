@@ -27,7 +27,8 @@
 			"srag\\CQRS\\" : "src/"
 		},
 		"classmap" : [
-			"src/"
+			"src/",
+			"vendor/"
 		]
 	},
 	"config" : {

@@ -14,8 +14,7 @@ namespace srag\CQRS\Aggregate;
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  *
  */
-class RevisionFactory {
-
+class RevisionFactory {    
 	const NAME_KEY = "revision_factory_revision_name_key";
 	const NAME_SEPERATOR = "_";
 
@@ -58,10 +57,10 @@ class RevisionFactory {
 	 *
 	 * @return string
 	 */
-	private static function GenerateRevisionKey(IsRevisable $entity): string {
+	private static function GenerateRevisionId(IsRevisable $entity, string $revision_name, string $algorithm = 'sha512'): RevisionId {
 		$data = $entity->getRevisionData();
 		$data[self::NAME_KEY] = $entity->getRevisionName();
-
-		return $entity->getRevisionName() . self::NAME_SEPERATOR . md5(serialize($data));
+		
+		return RevisionId::create(hash($algorithm, $data), $algorithm, $revision_name);
 	}
 }

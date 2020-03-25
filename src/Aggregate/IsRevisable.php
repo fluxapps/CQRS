@@ -14,33 +14,15 @@ namespace srag\CQRS\Aggregate;
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 interface IsRevisable {
-
 	/**
 	 * @return RevisionId revision id of object
 	 */
 	public function getRevisionId(): ?RevisionId;
 
-
 	/**
 	 * @param RevisionId $id
-	 *
-	 * Revision id is only to be set by the RevisionFactory when generating a
-	 * revision or by the persistance layer when loading an object
-	 *
-	 * @return mixed
 	 */
-	public function setRevisionId(RevisionId $id);
-
-
-	/**
-	 * @return string
-	 *
-	 * Name of the revision used by the RevisionFactory when generating a revision
-	 * Using of Creation Date and or an increasing Number are encouraged
-	 *
-	 */
-	public function getRevisionName(): ?string;
-
+	public function setRevisionId(RevisionId $id, int $user_id);
 
 	/**
 	 * @return array

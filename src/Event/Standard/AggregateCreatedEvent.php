@@ -4,6 +4,7 @@
 namespace srag\CQRS\Event\Standard;
 
 use srag\CQRS\Event\AbstractDomainEvent;
+use function GuzzleHttp\json_decode;
 
 /**
  * Class AggregateCreatedEvent
@@ -16,18 +17,28 @@ use srag\CQRS\Event\AbstractDomainEvent;
  */
 class AggregateCreatedEvent extends AbstractDomainEvent {
     
-    public function __construct($aggregate_id, $occurred_on, $initiating_user_id) {
+    /**
+     * @var array
+     */
+    protected  $additional_data;
+    
+    public function __construct($aggregate_id, $occurred_on, $initiating_user_id, array $additional_aata = null) {
+        $this->additional_data = $additional_aata;
+        
         parent::__construct($aggregate_id, $occurred_on, $initiating_user_id);
+    }
+    
+    public function getAdditionalData() : array {
+        return $this->additional_data;
     }
     
     public function getEventBody(): string
     {
-        //no additional parameters
-        return '';
+        return json_encode($this->additional_data);
     }
 
     protected function restoreEventBody(string $event_body): void
     {
-        //no additional parameters
+        $this->additional_data = json_decode($event_body, true);
     }
 }

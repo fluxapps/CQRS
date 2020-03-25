@@ -91,7 +91,7 @@ abstract class AbstractEventSourcedAggregateRoot implements AggregateRoot, Recor
 	/**
 	 * @param AggregateDeletedEvent $event
 	 */
-	protected function appliAggregateDeletedEvent(DomainEvent $event) {
+	protected function applyAggregateDeletedEvent(DomainEvent $event) {
 	    $this->is_deleted = true;
 	}
 

@@ -15,6 +15,10 @@ use srag\CQRS\Event\AbstractDomainEvent;
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class AggregateDeletedEvent extends AbstractDomainEvent {
+    public function __construct($aggregate_id, $occurred_on, $initiating_user_id) {
+        parent::__construct($aggregate_id, $occurred_on, $initiating_user_id);
+    }
+    
     public function getEventBody(): string
     {
         //no additional parameters

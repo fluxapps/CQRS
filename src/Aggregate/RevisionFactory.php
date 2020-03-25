@@ -24,10 +24,8 @@ class RevisionFactory {
 	 *
 	 * Revisable object will be stamped with a valid RevisionId
 	 */
-	public static function SetRevisionId(IsRevisable $entity) {
-
-		$key = self::GenerateRevisionKey($entity);
-		$entity->setRevisionId(new RevisionId($key));
+	public static function SetRevisionId(IsRevisable $entity, string $revision_name) {
+		$entity->setRevisionId(self::GenerateRevisionId($entity, $revision_name));
 	}
 
 

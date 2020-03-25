@@ -2,6 +2,8 @@
 
 namespace srag\CQRS\Aggregate;
 
+use srag\asq\Domain\Event\AggregateRevisionCreatedEvent;
+
 /**
  * Interface IsRevisable
  *
@@ -31,4 +33,9 @@ interface IsRevisable {
 	 * Domain specific data of an object and return it as an array
 	 */
 	public function getRevisionData(): array;
+	
+	/**
+	 * @param AggregateRevisionCreatedEvent $event
+	 */
+	protected function applyAggregateRevisionCreatedEvent(AggregateRevisionCreatedEvent $event);
 }

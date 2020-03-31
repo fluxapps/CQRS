@@ -4,7 +4,6 @@
 namespace srag\CQRS\Event\Standard;
 
 use srag\CQRS\Event\AbstractDomainEvent;
-use function GuzzleHttp\json_decode;
 
 /**
  * Class AggregateCreatedEvent

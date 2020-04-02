@@ -24,8 +24,12 @@ class RevisionFactory {
 	 *
 	 * Revisable object will be stamped with a valid RevisionId
 	 */
-	public static function SetRevisionId(IsRevisable $entity, string $revision_name) {
-		$entity->setRevisionId(self::GenerateRevisionId($entity, $revision_name));
+	public static function SetRevisionId(IsRevisable $entity, string $revision_name, ?int $user_id = null) {
+	    global $DIC;
+	    
+	    $current_user = $user_id ?? $DIC->user()->getId();
+	    
+		$entity->setRevisionId(self::GenerateRevisionId($entity, $revision_name), $current_user);
 	}
 
 
@@ -38,7 +42,8 @@ class RevisionFactory {
 	 * @return bool
 	 */
 	public static function ValidateRevision(IsRevisable $entity): bool {
-		return $entity->getRevisionId()->GetKey() === self::GenerateRevisionKey($entity);
+	    $revision_id = $entity->getRevisionId();
+	    return $revision_id->GetKey() === GenerateRevisionKey($entity, $revision_id->getName(), $revision_id->getAlgorithm());
 	}
 
 
@@ -55,10 +60,14 @@ class RevisionFactory {
 	 *
 	 * @return string
 	 */
-	private static function GenerateRevisionId(IsRevisable $entity, string $revision_name, string $algorithm = 'sha512'): RevisionId {
-		$data = $entity->getRevisionData();
-		$data[self::NAME_KEY] = $entity->getRevisionName();
-		
-		return RevisionId::create(hash($algorithm, $data), $algorithm, $revision_name);
+	private static function GenerateRevisionId(IsRevisable $entity, string $revision_name, string $algorithm = 'sha512'): RevisionId {		
+		return RevisionId::create(self::GenerateRevisionKey($entity, $revision_name, $algorithm), $algorithm, $revision_name);
+	}
+	
+	private static function GenerateRevisionKey(IsRevisable $entity, string $revision_name, string $algorithm) : string {
+	    $data = serialize($entity);
+	    $data .= $revision_name;
+	    
+	    return hash($algorithm, $data);
 	}
 }

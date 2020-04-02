@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace srag\asq\Domain\Event;
+namespace srag\CQRS\Event\Standard;
 
-use srag\CQRS\Aggregate\DomainObjectId;
-use srag\CQRS\Event\AbstractDomainEvent;
-use srag\CQRS\Aggregate\RevisionId;
 use ilDateTime;
 use srag\CQRS\Aggregate\AbstractValueObject;
+use srag\CQRS\Aggregate\RevisionId;
+use srag\CQRS\Event\AbstractDomainEvent;
+use srag\CQRS\Aggregate\DomainObjectId;
 
 /**
  * Class AggregateRevisionCreatedEvent
@@ -27,12 +27,12 @@ class AggregateRevisionCreatedEvent extends AbstractDomainEvent {
     /**
      * Revision Created event constructor
      * 
-     * @param string $aggregate_id
+     * @param DomainObjectId $aggregate_id
      * @param ilDateTime $occurred_on
      * @param int $initiating_user_id
      * @param RevisionId $revision_id
      */    
-    public function __construct(string $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id, RevisionId $revision_id = null) {
+    public function __construct(DomainObjectId $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id, RevisionId $revision_id = null) {
         $this->revision_id = $revision_id;
         
         parent::__construct($aggregate_id, $occurred_on, $initiating_user_id);
@@ -42,7 +42,7 @@ class AggregateRevisionCreatedEvent extends AbstractDomainEvent {
      * @return string
      */
     public function getRevisionId(): RevisionId {
-        return $this->revision_key;
+        return $this->revision_id;
     }
     
     /**

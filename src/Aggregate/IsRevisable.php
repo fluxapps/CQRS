@@ -2,7 +2,7 @@
 
 namespace srag\CQRS\Aggregate;
 
-use srag\asq\Domain\Event\AggregateRevisionCreatedEvent;
+use JsonSerializable;
 
 /**
  * Interface IsRevisable
@@ -25,12 +25,4 @@ interface IsRevisable {
 	 * @param RevisionId $id
 	 */
 	public function setRevisionId(RevisionId $id, int $user_id);
-
-	/**
-	 * @return array
-	 *
-	 * Data used for signing the revision, so this method needs to to collect all
-	 * Domain specific data of an object and return it as an array
-	 */
-	public function getRevisionData(): array;
 }

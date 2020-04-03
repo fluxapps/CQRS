@@ -113,7 +113,10 @@ abstract class AbstractValueObject implements JsonSerializable {
         return self::createFromArray($data_array);
     }
     
-    public static function createFromArray(array $data) {
+    public static function createFromArray(?array $data) {
+        if (is_null($data)) {
+            return null;
+        }
         
         if (array_key_exists(self::VAR_CLASSNAME, $data))  {
             /** @var AbstractValueObject $object */

@@ -51,13 +51,13 @@ class AggregateRevisionCreatedEvent extends AbstractDomainEvent {
      */
     public function getEventBody(): string
     {
-        return json_encode($this->revision_key);
+        return json_encode($this->revision_id);
     }
     
     /**
      * @param string $json_data
      */
     public function restoreEventBody(string $json_data) : void {
-        $this->revision_key = AbstractValueObject::deserialize($json_data);
+        $this->revision_id = RevisionId::deserialize($json_data);
     }
 }

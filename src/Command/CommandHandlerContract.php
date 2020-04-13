@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace srag\CQRS\Command;
 
+use ILIAS\Data\Result;
+
 /**
  * Interface CommandHandlerContract
  *
@@ -11,6 +13,5 @@ namespace srag\CQRS\Command;
  * and handled.
  */
 Interface CommandHandlerContract {
-
-	public function handle(CommandContract $command);
+	public function handle(CommandContract $command) : Result;
 }

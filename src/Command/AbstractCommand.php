@@ -30,6 +30,4 @@ abstract class AbstractCommand implements CommandContract {
     {
         return $this->issuing_user_id;
     }
-
-
 }

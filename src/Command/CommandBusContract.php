@@ -3,6 +3,8 @@
 
 namespace srag\CQRS\Command;
 
+use ILIAS\Data\Result;
+
 /**
  * Interface CommandBusContract
  *
@@ -15,7 +17,7 @@ interface CommandBusContract {
 	/**
 	 * @param CommandContract $command
 	 */
-	public function handle(CommandContract $command): void;
+	public function handle(CommandContract $command): Result;
 
 
 	/**

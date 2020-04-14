@@ -4,6 +4,7 @@
 namespace srag\CQRS\Event\Standard;
 
 use srag\CQRS\Event\AbstractDomainEvent;
+use srag\CQRS\Aggregate\AbstractValueObject;
 
 /**
  * Class AggregateCreatedEvent
@@ -38,6 +39,6 @@ class AggregateCreatedEvent extends AbstractDomainEvent {
 
     protected function restoreEventBody(string $event_body): void
     {
-        $this->additional_data = json_decode($event_body, true);
+        $this->additional_data = AbstractValueObject::deserialize($event_body);
     }
 }

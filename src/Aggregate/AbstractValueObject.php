@@ -99,7 +99,7 @@ abstract class AbstractValueObject implements JsonSerializable {
         return json_encode($this->jsonSerialize());
     }
 
-    public static function deserialize(?string $data) : ?AbstractValueObject {
+    public static function deserialize(?string $data) {
         if ($data === null) {
             return null;
         }

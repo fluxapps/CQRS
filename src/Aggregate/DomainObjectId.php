@@ -41,7 +41,6 @@ class DomainObjectId
         return $this->id;
     }
 
-
     /**
      * @param DomainObjectId $anId
      *

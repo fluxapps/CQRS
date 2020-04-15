@@ -16,5 +16,15 @@ interface IsEventSourced {
      * @return AggregateRoot
      */
 	public static function reconstitute(DomainEvents $event_history): AggregateRoot;
+	
+	/**
+	 * @return DomainEvents
+	 */
+	public function getRecordedEvents(): DomainEvents;
+	
+	/**
+	 *
+	 */
+	public function clearRecordedEvents(): void;
 }
  

@@ -18,7 +18,7 @@ use srag\CQRS\Event\Standard\AggregateDeletedEvent;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-abstract class AbstractEventSourcedAggregateRoot implements AggregateRoot, RecordsEvents, IsEventSourced {
+abstract class AbstractEventSourcedAggregateRoot implements AggregateRoot, IsEventSourced {
 
 	const APPLY_PREFIX = 'apply';
 	

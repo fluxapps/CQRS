@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace srag\CQRS\Event\Standard;
 
 use ilDateTime;
-use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\CQRS\Aggregate\RevisionId;
 use srag\CQRS\Event\AbstractDomainEvent;
 use srag\CQRS\Aggregate\DomainObjectId;
@@ -59,5 +58,14 @@ class AggregateRevisionCreatedEvent extends AbstractDomainEvent {
      */
     public function restoreEventBody(string $json_data) : void {
         $this->revision_id = RevisionId::deserialize($json_data);
+    }
+    
+    /**
+     * @return int
+     */
+    public static function getEventVersion(): int
+    {
+        // initial version 1
+        return 1;
     }
 }

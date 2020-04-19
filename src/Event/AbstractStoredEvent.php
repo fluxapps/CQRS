@@ -39,6 +39,15 @@ abstract class AbstractStoredEvent extends ActiveRecord
      */
     protected $event_id;
     /**
+     * @var int
+     *
+     * @con_has_field  true
+     * @con_fieldtype  integer
+     * @con_is_notnull true
+     * @con_length     8
+     */
+    protected $event_version;
+    /**
      * @var DomainObjectId
      *
      * @con_has_field  true
@@ -108,6 +117,7 @@ abstract class AbstractStoredEvent extends ActiveRecord
      */
     public function setEventData(
         EventID $event_id,
+        int $event_version,
         DomainObjectId $aggregate_id,
         string $event_name,
         ilDateTime $occurred_on,
@@ -116,6 +126,7 @@ abstract class AbstractStoredEvent extends ActiveRecord
         string $event_class
 ) : void {
         $this->event_id = $event_id;
+        $this->event_version = $event_version;
         $this->aggregate_id = $aggregate_id;
         $this->event_name = $event_name;
         $this->occurred_on = $occurred_on;
@@ -151,7 +162,14 @@ abstract class AbstractStoredEvent extends ActiveRecord
         return $this->event_id;
     }
 
-
+    /**
+     * @return int
+     */
+    public function getEventVersion() : int
+    {
+        return $this->event_version;
+    }
+    
     /**
      * @return DomainObjectId
      */

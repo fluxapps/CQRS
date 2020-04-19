@@ -31,6 +31,7 @@ abstract class EventStore {
             
             $stored_event->setEventData(
                 new EventID(),
+                $event::getEventVersion(),
                 $event->getAggregateId(),
                 $event->getEventName(),
                 $event->getOccurredOn(),
@@ -68,6 +69,7 @@ abstract class EventStore {
             $event_name = $row['event_class'];
             $event = $event_name::restore(
                 new EventID($row['event_id']),
+                intval($row['event_version']),
                 new DomainObjectId($row['aggregate_id']),
                 intval($row['initiating_user_id']),
                 new ilDateTime($row['occurred_on']),
@@ -104,6 +106,7 @@ abstract class EventStore {
             $event_name = $row['event_class'];
             $event = $event_name::restore(
                 new EventID($row['event_id']),
+                intval($row['event_version']),
                 new DomainObjectId($row['aggregate_id']),
                 intval($row['initiating_user_id']),
                 new ilDateTime($row['occurred_on']),

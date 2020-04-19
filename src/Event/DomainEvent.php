@@ -31,13 +31,11 @@ interface DomainEvent {
 	 */
 	public function getAggregateId(): DomainObjectId;
 
-
 	/**
 	 * @return string
 	 */
 	public function getEventName(): string;
-
-
+	
 	/**
 	 * @return ilDateTime
 	 */

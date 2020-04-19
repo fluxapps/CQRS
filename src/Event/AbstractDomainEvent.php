@@ -6,6 +6,7 @@ namespace srag\CQRS\Event;
 use Exception;
 use ilDateTime;
 use srag\CQRS\Aggregate\DomainObjectId;
+use srag\CQRS\Exception\CQRSException;
 
 /**
  * Class AbstractDomainEvent
@@ -107,13 +108,11 @@ abstract class AbstractDomainEvent implements DomainEvent
      */
     abstract public function getEventBody() : string;
 
-
     /**
-     * @param string $event_body
+     * @return int
      */
-    abstract protected function restoreEventBody(string $event_body) : void;
-
-
+    abstract public static function getEventVersion() : int;
+    
     /**
      * @param EventID        $event_id
      * @param DomainObjectId $aggregate_id
@@ -126,6 +125,7 @@ abstract class AbstractDomainEvent implements DomainEvent
      */
     public static function restore(
         EventID $event_id,
+        int $event_version,
         DomainObjectId $aggregate_id,
         int $initiating_user_id,
         ilDateTime $occurred_on,
@@ -133,7 +133,40 @@ abstract class AbstractDomainEvent implements DomainEvent
     ) : AbstractDomainEvent {
         $restored = new static($aggregate_id, $occurred_on, $initiating_user_id);
         $restored->event_id = $event_id;
-        $restored->restoreEventBody($event_body);
+        
+        if (static::getEventVersion() < $event_version) 
+        {
+            throw new CQRSException('Event store contains future versions of Events, ILIAS update necessary');
+        } 
+
+        $restored->processEventBody($event_body, $event_version);
+        
         return $restored;
+    }
+    
+    /**
+     * @param string $event_body
+     * @param int $event_version
+     */
+    private function processEventBody(string $event_body, int $event_version) 
+    {
+        if (static::getEventVersion() === $event_version) {
+            $this->restoreEventBody($event_body);
+        }
+        else {
+            $this->restoreOldEventBody($event_body, $event_version);
+        }
+    }
+    
+    /**
+     * @param string $event_body
+     */
+    abstract protected function restoreEventBody(string $event_body) : void;
+    
+    /**
+     * @return DomainEvent
+     */
+    protected function restoreOldEventBody(string $old_event_body, int $old_version) : DomainEvent {
+        throw new CQRSException("Used ILIAS not compatible with available EventStore");
     }
 }

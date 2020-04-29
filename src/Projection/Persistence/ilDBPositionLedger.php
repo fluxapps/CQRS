@@ -15,24 +15,6 @@ use srag\CQRS\Projection\ValueObjects\ProjectorPosition;
  */
 class ilDBPositionLedger implements PositionLedger
 {
-
-    /**
-     * @var ilDBInterface
-     */
-    protected $database;
-
-
-    /**
-     * ilDBPositionLedger constructor.
-     *
-     * @param ilDBInterface $database
-     */
-    public function __construct(ilDBInterface $database)
-    {
-        $this->database = $database;
-    }
-
-
     /**
      * @param ProjectorPosition $position
      */

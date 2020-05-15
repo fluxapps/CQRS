@@ -8,7 +8,7 @@ use srag\CQRS\Event\DomainEvents;
 use srag\CQRS\Event\EventStore;
 
 /**
- * Class AbstractEventSourcedAggregateRepository
+ * Class AbstractAggregateRepository
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  * @author  Adrian Lüthi <al@studer-raimann.ch>
@@ -16,7 +16,7 @@ use srag\CQRS\Event\EventStore;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-abstract class AbstractEventSourcedAggregateRepository
+abstract class AbstractAggregateRepository
 {
 
     const CACHE_NAME = "CQRS_REPOSITORY_CACHE";
@@ -30,11 +30,11 @@ abstract class AbstractEventSourcedAggregateRepository
     private $has_cache = false;
 
     /**
-     * @var AbstractEventSourcedAggregateRepository
+     * @var AbstractAggregateRepository
      */
     private static $instances;
     /**
-     * @return AbstractEventSourcedAggregateRepository
+     * @return AbstractAggregateRepository
      */
     public static function getInstance() {
         if (self::$instances === null) {
@@ -64,16 +64,16 @@ abstract class AbstractEventSourcedAggregateRepository
 
 
     /**
-     * @param AbstractEventSourcedAggregateRoot $aggregate
+     * @param AbstractAggregateRoot $aggregate
      */
-    public function save(AbstractEventSourcedAggregateRoot $aggregate)
+    public function save(AbstractAggregateRoot $aggregate)
     {
         $events = $aggregate->getRecordedEvents();
         $this->getEventStore()->commit($events);
         $aggregate->clearRecordedEvents();
 
         if ($this->has_cache) {
-            self::$cache->set($aggregate->getAggregateId()->getId(), $aggregate);
+            self::$cache->set($aggregate->getAggregateId(), $aggregate);
         }
 
         $this->notifyAboutNewEvents();
@@ -83,15 +83,13 @@ abstract class AbstractEventSourcedAggregateRepository
     /**
      * @param string $aggregate_id
      *
-     * @return AggregateRoot
+     * @return AbstractAggregateRoot
      */
-    public function getAggregateRootById(string $aggregate_id) : AggregateRoot
+    public function getAggregateRootById(string $aggregate_id) : AbstractAggregateRoot
     {
         if (false && $this->has_cache) {
             return $this->getFromCache($aggregate_id);
         } else {
-            $this->id = $aggregate_id;
-
             return $this->reconstituteAggregate($this->getEventStore()->getAggregateHistoryFor($aggregate_id));
         }
     }
@@ -100,7 +98,7 @@ abstract class AbstractEventSourcedAggregateRepository
     /**
      * @param string $aggregate_id
      *
-     * @return AggregateRoot
+     * @return AbstractAggregateRoot
      */
     private function getFromCache(string $aggregate_id)
     {
@@ -132,7 +130,7 @@ abstract class AbstractEventSourcedAggregateRepository
     /**
      * @param DomainEvents $event_history
      *
-     * @return AggregateRoot
+     * @return AbstractAggregateRoot
      */
-    protected abstract function reconstituteAggregate(DomainEvents $event_history) : AggregateRoot;
+    protected abstract function reconstituteAggregate(DomainEvents $event_history) : AbstractAggregateRoot;
 }

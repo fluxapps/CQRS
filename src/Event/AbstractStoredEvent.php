@@ -221,12 +221,8 @@ abstract class AbstractStoredEvent extends ActiveRecord
     public function sleep($field_name)
     {
         switch ($field_name) {
-            case 'event_id':
-                return $this->event_id->getId();
             case 'occurred_on':
                 return $this->occurred_on->get(IL_CAL_DATETIME);
-            case 'aggregate_id':
-                return $this->aggregate_id->getId();
             default:
                 return null;
         }

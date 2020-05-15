@@ -56,7 +56,7 @@ abstract class EventStore {
         $sql = sprintf(
             'SELECT * FROM %s where aggregate_id = %s',
             $this->getStorageName(),
-            $DIC->database()->quote($id->getId(),'string')
+            $DIC->database()->quote($id, 'string')
         );
 
         $res = $DIC->database()->query($sql);

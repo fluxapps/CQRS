@@ -10,7 +10,7 @@ use srag\CQRS\Exception\CQRSException;
 use srag\CQRS\Event\Standard\AggregateDeletedEvent;
 
 /**
- * Class AbstractEventSourcedAggregateRoot
+ * Class AbstractAggregateRoot
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  * @author  Adrian Lüthi <al@studer-raimann.ch>
@@ -18,7 +18,7 @@ use srag\CQRS\Event\Standard\AggregateDeletedEvent;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-abstract class AbstractEventSourcedAggregateRoot implements IsEventSourced {
+abstract class AbstractAggregateRoot {
 
 	const APPLY_PREFIX = 'apply';
 
@@ -129,9 +129,9 @@ abstract class AbstractEventSourcedAggregateRoot implements IsEventSourced {
     /**
      * @param DomainEvents $event_history
      *
-     * @return AbstractEventSourcedAggregateRoot
+     * @return AbstractAggregateRoot
      */
-    public static function reconstitute(DomainEvents $event_history) : AbstractEventSourcedAggregateRoot
+    public static function reconstitute(DomainEvents $event_history) : AbstractAggregateRoot
     {
         $aggregate_root = new static();
         foreach ($event_history->getEvents() as $event) {

@@ -2,10 +2,7 @@
 
 namespace srag\CQRS\Aggregate;
 
-use ilDate;
-use ilDateTime;
 use JsonSerializable;
-use stdClass;
 
 /**
  * Class AbstractValueObject
@@ -28,7 +25,7 @@ abstract class AbstractValueObject implements JsonSerializable {
 
     /**
      * Compares ValueObjects to each other returns true if they are the same
-     * 
+     *
      * @param AbstractValueObject $other
      * @return bool
      */
@@ -39,7 +36,7 @@ abstract class AbstractValueObject implements JsonSerializable {
 
     /**
      * Compares if two nullable ValueObjects are equal and returns true if they are
-     * 
+     *
      * @param AbstractValueObject $first
      * @param AbstractValueObject $second
      * @return bool
@@ -53,11 +50,11 @@ abstract class AbstractValueObject implements JsonSerializable {
                 return false;
             }
         }
-        
+
         if ($second === null) {
             return false;
         }
-        
+
         return $first->equals($second);
     }
 
@@ -103,29 +100,29 @@ abstract class AbstractValueObject implements JsonSerializable {
         if ($data === null) {
             return null;
         }
-        
+
         $data_array = json_decode($data, true);
-        
+
         if ($data_array === null) {
             return null;
         }
-        
+
         return self::createFromArray($data_array);
     }
-    
+
     public static function createFromArray(?array $data) {
         if (is_null($data)) {
             return null;
         }
-        
+
         if (array_key_exists(self::VAR_CLASSNAME, $data))  {
             /** @var AbstractValueObject $object */
             $object = new $data[self::VAR_CLASSNAME]();
-            
+
             foreach ($data as $key=>$value) {
                 $object->$key = is_array($value) ? self::createFromArray($value) : $value;
             }
-            
+
             return $object;
         }
         else {
@@ -134,7 +131,7 @@ abstract class AbstractValueObject implements JsonSerializable {
                     $data[$key] = self::createFromArray($value);
                 }
             }
-            
+
             return $data;
         }
     }

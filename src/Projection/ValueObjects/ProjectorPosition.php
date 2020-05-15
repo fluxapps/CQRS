@@ -6,7 +6,6 @@ use Exception;
 use ilDateTime;
 use srag\CQRS\Aggregate\AbstractValueObject;
 use srag\CQRS\Event\DomainEvent;
-use srag\CQRS\Event\EventID;
 use srag\CQRS\Projection\Projector;
 
 /**
@@ -28,7 +27,7 @@ class ProjectorPosition extends AbstractValueObject
      */
     public $processed_events;
     /**
-     * @var EventID
+     * @var string
      */
     public $last_position;
     /**
@@ -47,14 +46,14 @@ class ProjectorPosition extends AbstractValueObject
      * @param Projector       $projector
      * @param int             $processed_events
      * @param ilDateTime|null $occurred_at
-     * @param EventID         $last_position
+     * @param string          $last_position
      * @param ProjectorStatus $status
      */
     public function __construct(
         Projector $projector,
         int $processed_events,
         ?ilDateTime $occurred_at,
-        ?EventID $last_position,
+        ?string $last_position,
         ProjectorStatus $status
     ) {
         $this->projector = $projector;

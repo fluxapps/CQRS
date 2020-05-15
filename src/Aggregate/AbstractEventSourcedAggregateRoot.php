@@ -18,16 +18,15 @@ use srag\CQRS\Event\Standard\AggregateDeletedEvent;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-abstract class AbstractEventSourcedAggregateRoot implements AggregateRoot, IsEventSourced {
+abstract class AbstractEventSourcedAggregateRoot implements IsEventSourced {
 
 	const APPLY_PREFIX = 'apply';
-	
-	//TODO private me
+
 	/**
-	 * @var DomainObjectId
+	 * @var string
 	 */
 	protected $aggregate_id;
-	
+
 	/**
 	 * @var DomainEvents
 	 */
@@ -37,7 +36,7 @@ abstract class AbstractEventSourcedAggregateRoot implements AggregateRoot, IsEve
 	 * @var bool
 	 */
     private $is_deleted;
-	
+
     /**
      * AbstractEventSourcedAggregateRoot constructor.
      */
@@ -53,7 +52,7 @@ abstract class AbstractEventSourcedAggregateRoot implements AggregateRoot, IsEve
         if ($this->is_deleted) {
             return new CQRSException("Action on deleted Aggregate not allowed");
         }
-        
+
 		// apply results of event to class, most events should result in some changes
 		$this->applyEvent($event);
 
@@ -87,7 +86,7 @@ abstract class AbstractEventSourcedAggregateRoot implements AggregateRoot, IsEve
 	protected function applyAggregateCreatedEvent(DomainEvent $event) {
 	    $this->aggregate_id = $event->getAggregateId();
 	}
-	
+
 	/**
 	 * @param AggregateDeletedEvent $event
 	 */
@@ -121,18 +120,18 @@ abstract class AbstractEventSourcedAggregateRoot implements AggregateRoot, IsEve
 
 
     /**
-     * @return DomainObjectId
+     * @return string
      */
-	function getAggregateId(): DomainObjectId {
+	public function getAggregateId(): string {
 	    return $this->aggregate_id;
 	}
 
     /**
      * @param DomainEvents $event_history
      *
-     * @return AggregateRoot
+     * @return AbstractEventSourcedAggregateRoot
      */
-    public static function reconstitute(DomainEvents $event_history) : AggregateRoot
+    public static function reconstitute(DomainEvents $event_history) : AbstractEventSourcedAggregateRoot
     {
         $aggregate_root = new static();
         foreach ($event_history->getEvents() as $event) {

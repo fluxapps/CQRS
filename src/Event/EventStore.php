@@ -3,9 +3,9 @@
 
 namespace srag\CQRS\Event;
 
-use srag\CQRS\Aggregate\DomainObjectId;
 use srag\CQRS\Exception\CQRSException;
 use ilDateTime;
+use ILIAS\Data\UUID\Factory;
 
 /**
  * Abstract Class EventStore
@@ -24,13 +24,15 @@ abstract class EventStore {
      * @return void
      */
     public function commit(DomainEvents $events) : void {
+        $uuid_factory = new Factory();
+
         /** @var AbstractDomainEvent $event */
         foreach ($events->getEvents() as $event) {
             $ar_class = $this->getEventArClass();
             $stored_event = new $ar_class();
-            
+
             $stored_event->setEventData(
-                new EventID(),
+                $uuid_factory->uuid4AsString(),
                 $event::getEventVersion(),
                 $event->getAggregateId(),
                 $event->getEventName(),
@@ -38,17 +40,17 @@ abstract class EventStore {
                 $event->getInitiatingUserId(),
                 $event->getEventBody(),
                 get_class($event));
-            
+
             $stored_event->create();
         }
     }
-    
+
     /**
-     * @param DomainObjectId $id
+     * @param string $id
      *
      * @return DomainEvents
      */
-    public function getAggregateHistoryFor(DomainObjectId $id): DomainEvents {
+    public function getAggregateHistoryFor(string $id): DomainEvents {
         global $DIC;
 
         $sql = sprintf(
@@ -56,77 +58,77 @@ abstract class EventStore {
             $this->getStorageName(),
             $DIC->database()->quote($id->getId(),'string')
         );
-        
+
         $res = $DIC->database()->query($sql);
-        
+
         if ($res->rowCount() === 0) {
             throw new CQRSException('Aggregate does not exist');
         }
-        
+
         $event_stream = new DomainEvents();
         while ($row = $DIC->database()->fetchAssoc($res)) {
             /**@var AbstractDomainEvent $event */
             $event_name = $row['event_class'];
             $event = $event_name::restore(
-                new EventID($row['event_id']),
+                $row['event_id'],
                 intval($row['event_version']),
-                new DomainObjectId($row['aggregate_id']),
+                $row['aggregate_id'],
                 intval($row['initiating_user_id']),
                 new ilDateTime($row['occurred_on']),
                 $row['event_body']);
             $event_stream->addEvent($event);
         }
-        
+
         return $event_stream;
     }
 
     /**
-     * @param EventID $from_position
+     * @param ?string $from_id
      *
      * @return DomainEvents
      */
-    public function getEventStream(?EventID $from_position) : DomainEvents {
+    public function getEventStream(?string $from_id = null) : DomainEvents {
         global $DIC;
-        
+
         $sql = sprintf('SELECT * FROM %s', $this->getStorageName());
-        
-        if (!is_null($from_position)) {
+
+        if (!is_null($from_id)) {
             $sql .= sprintf(
                 ' WHERE id > (SELECT id FROM %s WHERE event_id = "%s")',
                 $this->getStorageName(),
-                $from_position->getId()
+                $from_id
             );
         }
-        
+
         $res = $DIC->database()->query($sql);
-        
+
         $event_stream = new DomainEvents();
         while ($row = $DIC->database()->fetchAssoc($res)) {
             /**@var AbstractDomainEvent $event */
             $event_name = $row['event_class'];
             $event = $event_name::restore(
-                new EventID($row['event_id']),
+                $row['event_id'],
                 intval($row['event_version']),
-                new DomainObjectId($row['aggregate_id']),
+                $row['aggregate_id'],
                 intval($row['initiating_user_id']),
                 new ilDateTime($row['occurred_on']),
                 $row['event_body']);
             $event_stream->addEvent($event);
         }
-        
+
         return $event_stream;
     }
-    
+
     /**
      * @return string
      */
     protected function getStorageName() : string {
         return call_user_func($this->getEventArClass() . '::returnDbTableName');
     }
-    
+
     /**
      * Gets the Active Record class that is used for the event store
-     * 
+     *
      * @return string
      */
     protected abstract function getEventArClass() : string;

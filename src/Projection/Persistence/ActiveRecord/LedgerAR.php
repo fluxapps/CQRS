@@ -6,7 +6,6 @@ use ActiveRecord;
 use Exception;
 use ilDateTime;
 use ilDateTimeException;
-use srag\CQRS\Event\EventID;
 use srag\CQRS\Projection\ValueObjects\ProjectorStatus;
 
 /**
@@ -48,7 +47,7 @@ class LedgerAR extends ActiveRecord
      */
     public $processed_events;
     /**
-     * @var EventID
+     * @var string
      *
      * @con_has_field  true
      * @con_fieldtype  text
@@ -97,15 +96,13 @@ class LedgerAR extends ActiveRecord
      * @param $field_name
      * @param $field_value
      *
-     * @return ilDateTime|mixed|EventID|ProjectorStatus|null
+     * @return ilDateTime|mixed|string|ProjectorStatus|null
      * @throws ilDateTimeException
      * @throws Exception
      */
     public function wakeUp($field_name, $field_value)
     {
         switch ($field_name) {
-            case 'last_position':
-                return $field_value ? new EventID($field_value) : null;
             case 'occurred_at':
                 return $field_value ? new ilDateTime($field_value) : null;
             case 'status':

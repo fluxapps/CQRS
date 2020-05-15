@@ -4,7 +4,6 @@
 namespace srag\CQRS\Event;
 
 use \ilDateTime;
-use srag\CQRS\Aggregate\DomainObjectId;
 
 /**
  * Interface DomainEvent
@@ -20,36 +19,36 @@ use srag\CQRS\Aggregate\DomainObjectId;
 interface DomainEvent {
 
     /**
-     * @return EventID
+     * @return string
      */
-    public function getEventId(): EventID;
+    public function getEventId() : string;
 
 	/**
 	 * The Aggregate this event belongs to.
 	 *
-	 * @return DomainObjectId
+	 * @return string
 	 */
-	public function getAggregateId(): DomainObjectId;
+	public function getAggregateId() : string;
 
 	/**
 	 * @return string
 	 */
-	public function getEventName(): string;
-	
+	public function getEventName() : string;
+
 	/**
 	 * @return ilDateTime
 	 */
-	public function getOccurredOn(): ilDateTime;
+	public function getOccurredOn() : ilDateTime;
 
 
 	/**
 	 * @return int
 	 */
-	public function getInitiatingUserId(): int;
+	public function getInitiatingUserId() : int;
 
 
 	/**
 	 * @return string
 	 */
-	public function getEventBody(): string;
+	public function getEventBody() : string;
 }

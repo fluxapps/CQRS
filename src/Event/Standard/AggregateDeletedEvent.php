@@ -5,7 +5,6 @@ namespace srag\CQRS\Event\Standard;
 
 use srag\CQRS\Event\AbstractDomainEvent;
 use ilDateTime;
-use srag\CQRS\Aggregate\DomainObjectId;
 
 /**
  * Class AggregateDeletedEvent
@@ -18,14 +17,14 @@ use srag\CQRS\Aggregate\DomainObjectId;
  */
 class AggregateDeletedEvent extends AbstractDomainEvent {
     /**
-     * @param DomainObjectId $aggregate_id
+     * @param string $aggregate_id
      * @param ilDateTime $occurred_on
      * @param int $initiating_user_id
      */
-    public function __construct(DomainObjectId $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id) {
+    public function __construct(string $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id) {
         parent::__construct($aggregate_id, $occurred_on, $initiating_user_id);
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \srag\CQRS\Event\AbstractDomainEvent::getEventBody()
@@ -35,7 +34,7 @@ class AggregateDeletedEvent extends AbstractDomainEvent {
         //no additional parameters
         return '';
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \srag\CQRS\Event\AbstractDomainEvent::restoreEventBody()
@@ -44,7 +43,7 @@ class AggregateDeletedEvent extends AbstractDomainEvent {
     {
         //no additional parameters
     }
-    
+
     /**
      * @return int
      */

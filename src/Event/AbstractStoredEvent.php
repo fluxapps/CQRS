@@ -6,8 +6,6 @@ use ActiveRecord;
 use ilDateTime;
 use ilDateTimeException;
 use ilException;
-use srag\CQRS\Aggregate\DomainObjectId;
-use srag\CQRS\Event\EventID;
 
 /**
  * Class AbstractStoredEvent
@@ -29,7 +27,7 @@ abstract class AbstractStoredEvent extends ActiveRecord
      */
     protected $id;
     /**
-     * @var EventID
+     * @var string
      *
      * @con_has_field  true
      * @con_fieldtype  text
@@ -48,7 +46,7 @@ abstract class AbstractStoredEvent extends ActiveRecord
      */
     protected $event_version;
     /**
-     * @var DomainObjectId
+     * @var string
      *
      * @con_has_field  true
      * @con_fieldtype  text
@@ -107,8 +105,8 @@ abstract class AbstractStoredEvent extends ActiveRecord
     /**
      * Store event data.
      *
-     * @param EventID        $event_id
-     * @param DomainObjectId $aggregate_id
+     * @param string        $event_id
+     * @param string $aggregate_id
      * @param string         $event_name
      * @param ilDateTime     $occurred_on
      * @param int            $initiating_user_id
@@ -116,9 +114,9 @@ abstract class AbstractStoredEvent extends ActiveRecord
      * @param string         $event_class
      */
     public function setEventData(
-        EventID $event_id,
+        string $event_id,
         int $event_version,
-        DomainObjectId $aggregate_id,
+        string $aggregate_id,
         string $event_name,
         ilDateTime $occurred_on,
         int $initiating_user_id,
@@ -155,9 +153,9 @@ abstract class AbstractStoredEvent extends ActiveRecord
 
 
     /**
-     * @return EventID
+     * @return string
      */
-    public function getEventId() : EventID
+    public function getEventId() : string
     {
         return $this->event_id;
     }
@@ -169,11 +167,11 @@ abstract class AbstractStoredEvent extends ActiveRecord
     {
         return $this->event_version;
     }
-    
+
     /**
-     * @return DomainObjectId
+     * @return string
      */
-    public function getAggregateId() : DomainObjectId
+    public function getAggregateId() : string
     {
         return $this->aggregate_id;
     }
@@ -245,12 +243,8 @@ abstract class AbstractStoredEvent extends ActiveRecord
     public function wakeUp($field_name, $field_value)
     {
         switch ($field_name) {
-            case 'event_id':
-                return new EventID($field_value);
             case 'occurred_on':
                 return new ilDateTime($field_value, IL_CAL_DATETIME);
-            case 'aggregate_id':
-                return new DomainObjectId($field_value);
             default:
                 return null;
         }

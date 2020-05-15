@@ -4,7 +4,6 @@
 namespace srag\CQRS\Event;
 
 use Exception;
-use srag\CQRS\Aggregate\DomainObjectId;
 
 /**
  * Class AggregateHistory
@@ -18,7 +17,7 @@ use srag\CQRS\Aggregate\DomainObjectId;
 final class AggregateHistory extends DomainEvents {
 
 	/**
-	 * @var DomainObjectId
+	 * @var string
 	 */
 	private $aggregate_Id;
 
@@ -26,12 +25,12 @@ final class AggregateHistory extends DomainEvents {
 	/**
 	 * AggregateHistory constructor.
 	 *
-	 * @param DomainObjectId   $aggregate_Id
+	 * @param string   $aggregate_Id
 	 * @param DomainEvent[] $events
 	 *
 	 * @throws Exception
 	 */
-	public function __construct(DomainObjectId $aggregate_Id, array $events) {
+	public function __construct(string $aggregate_Id, array $events) {
 		/** @var $event DomainEvent */
 		foreach ($events as $event) {
 			if (!$event->getAggregateId()->equals($aggregate_Id)) {
@@ -49,9 +48,9 @@ final class AggregateHistory extends DomainEvents {
 
 
 	/**
-	 * @return DomainObjectId
+	 * @return string
 	 */
-	public function getAggregateId(): DomainObjectId {
+	public function getAggregateId(): string {
 		return $this->aggregate_Id;
 	}
 

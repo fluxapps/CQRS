@@ -5,7 +5,6 @@ namespace srag\CQRS\Event;
 
 use Exception;
 use ilDateTime;
-use srag\CQRS\Aggregate\DomainObjectId;
 use srag\CQRS\Exception\CQRSException;
 
 /**
@@ -21,11 +20,11 @@ abstract class AbstractDomainEvent implements DomainEvent
 {
 
     /**
-     * @var EventID
+     * @var string
      */
     protected $event_id;
     /**
-     * @var DomainObjectId
+     * @var string
      */
     protected $aggregate_id;
     /**
@@ -41,11 +40,11 @@ abstract class AbstractDomainEvent implements DomainEvent
     /**
      * AbstractDomainEvent constructor.
      *
-     * @param DomainObjectId $aggregate_id
+     * @param string $aggregate_id
      * @param ilDateTime     $occurred_on
      * @param int            $initiating_user_id
      */
-    protected function __construct(DomainObjectId $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id)
+    protected function __construct(string $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id)
     {
         $this->aggregate_id = $aggregate_id;
         $this->occurred_on = $occurred_on;
@@ -54,9 +53,9 @@ abstract class AbstractDomainEvent implements DomainEvent
 
 
     /**
-     * @return EventID
+     * @return string
      */
-    public function getEventId() : EventID
+    public function getEventId() : string
     {
         return $this->event_id;
     }
@@ -65,9 +64,9 @@ abstract class AbstractDomainEvent implements DomainEvent
     /**
      * The Aggregate this event belongs to.
      *
-     * @return DomainObjectId
+     * @return string
      */
-    public function getAggregateId() : DomainObjectId
+    public function getAggregateId() : string
     {
         return $this->aggregate_id;
     }
@@ -112,10 +111,10 @@ abstract class AbstractDomainEvent implements DomainEvent
      * @return int
      */
     abstract public static function getEventVersion() : int;
-    
+
     /**
-     * @param EventID        $event_id
-     * @param DomainObjectId $aggregate_id
+     * @param string        $event_id
+     * @param string $aggregate_id
      * @param int            $initiating_user_id
      * @param ilDateTime     $occurred_on
      * @param string         $event_body
@@ -124,31 +123,31 @@ abstract class AbstractDomainEvent implements DomainEvent
      * @throws Exception
      */
     public static function restore(
-        EventID $event_id,
+        string $event_id,
         int $event_version,
-        DomainObjectId $aggregate_id,
+        string $aggregate_id,
         int $initiating_user_id,
         ilDateTime $occurred_on,
         string $event_body
     ) : AbstractDomainEvent {
         $restored = new static($aggregate_id, $occurred_on, $initiating_user_id);
         $restored->event_id = $event_id;
-        
-        if (static::getEventVersion() < $event_version) 
+
+        if (static::getEventVersion() < $event_version)
         {
             throw new CQRSException('Event store contains future versions of Events, ILIAS update necessary');
-        } 
+        }
 
         $restored->processEventBody($event_body, $event_version);
-        
+
         return $restored;
     }
-    
+
     /**
      * @param string $event_body
      * @param int $event_version
      */
-    private function processEventBody(string $event_body, int $event_version) 
+    private function processEventBody(string $event_body, int $event_version)
     {
         if (static::getEventVersion() === $event_version) {
             $this->restoreEventBody($event_body);
@@ -157,12 +156,12 @@ abstract class AbstractDomainEvent implements DomainEvent
             $this->restoreOldEventBody($event_body, $event_version);
         }
     }
-    
+
     /**
      * @param string $event_body
      */
     abstract protected function restoreEventBody(string $event_body) : void;
-    
+
     /**
      * @return DomainEvent
      */

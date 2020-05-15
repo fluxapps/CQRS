@@ -16,7 +16,7 @@ use srag\CQRS\Event\EventStore;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-abstract class AbstractEventSourcedAggregateRepository implements AggregateRepository
+abstract class AbstractEventSourcedAggregateRepository
 {
 
     const CACHE_NAME = "CQRS_REPOSITORY_CACHE";
@@ -40,12 +40,12 @@ abstract class AbstractEventSourcedAggregateRepository implements AggregateRepos
         if (self::$instances === null) {
             self::$instances = [];
         }
-        
+
         $class_name = get_called_class();
         if (self::$instances[$class_name] === null) {
             self::$instances[$class_name] = new $class_name();
         }
-        
+
         return self::$instances[$class_name];
     }
 
@@ -81,11 +81,11 @@ abstract class AbstractEventSourcedAggregateRepository implements AggregateRepos
 
 
     /**
-     * @param DomainObjectId $aggregate_id
+     * @param string $aggregate_id
      *
      * @return AggregateRoot
      */
-    public function getAggregateRootById(DomainObjectId $aggregate_id) : AggregateRoot
+    public function getAggregateRootById(string $aggregate_id) : AggregateRoot
     {
         if (false && $this->has_cache) {
             return $this->getFromCache($aggregate_id);
@@ -98,11 +98,11 @@ abstract class AbstractEventSourcedAggregateRepository implements AggregateRepos
 
 
     /**
-     * @param DomainObjectId $aggregate_id
+     * @param string $aggregate_id
      *
      * @return AggregateRoot
      */
-    private function getFromCache(DomainObjectId $aggregate_id)
+    private function getFromCache(string $aggregate_id)
     {
         $cache_key = $aggregate_id->getId();
         $aggregate = self::$cache->get($cache_key);

@@ -6,7 +6,6 @@ namespace srag\CQRS\Event\Standard;
 use ilDateTime;
 use srag\CQRS\Aggregate\RevisionId;
 use srag\CQRS\Event\AbstractDomainEvent;
-use srag\CQRS\Aggregate\DomainObjectId;
 
 /**
  * Class AggregateRevisionCreatedEvent
@@ -22,28 +21,28 @@ class AggregateRevisionCreatedEvent extends AbstractDomainEvent {
      * @var RevisionId
      */
     public $revision_id;
-    
+
     /**
      * Revision Created event constructor
-     * 
-     * @param DomainObjectId $aggregate_id
+     *
+     * @param string $aggregate_id
      * @param ilDateTime $occurred_on
      * @param int $initiating_user_id
      * @param RevisionId $revision_id
-     */    
-    public function __construct(DomainObjectId $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id, RevisionId $revision_id = null) {
+     */
+    public function __construct(string $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id, RevisionId $revision_id = null) {
         $this->revision_id = $revision_id;
-        
+
         parent::__construct($aggregate_id, $occurred_on, $initiating_user_id);
     }
-        
+
     /**
      * @return string
      */
     public function getRevisionId(): RevisionId {
         return $this->revision_id;
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \srag\CQRS\Event\AbstractDomainEvent::getEventBody()
@@ -52,14 +51,14 @@ class AggregateRevisionCreatedEvent extends AbstractDomainEvent {
     {
         return json_encode($this->revision_id);
     }
-    
+
     /**
      * @param string $json_data
      */
     public function restoreEventBody(string $json_data) : void {
         $this->revision_id = RevisionId::deserialize($json_data);
     }
-    
+
     /**
      * @return int
      */

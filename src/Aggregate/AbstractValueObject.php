@@ -120,7 +120,9 @@ abstract class AbstractValueObject implements JsonSerializable {
             $object = new $data[self::VAR_CLASSNAME]();
 
             foreach ($data as $key=>$value) {
-                $object->$key = is_array($value) ? self::createFromArray($value) : $value;
+                if (!($key === self::VAR_CLASSNAME)) {
+                    $object->$key = is_array($value) ? self::createFromArray($value) : $value;
+                }
             }
 
             return $object;

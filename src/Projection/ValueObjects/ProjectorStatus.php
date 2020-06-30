@@ -12,7 +12,6 @@ use srag\CQRS\Aggregate\AbstractValueObject;
  */
 class ProjectorStatus extends AbstractValueObject
 {
-
     const NEW = "new";
     const WORKING = "working";
     const BROKEN = "broken";

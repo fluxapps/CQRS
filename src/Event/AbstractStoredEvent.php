@@ -122,7 +122,7 @@ abstract class AbstractStoredEvent extends ActiveRecord
         int $initiating_user_id,
         string $event_body,
         string $event_class
-) : void {
+    ) : void {
         $this->event_id = $event_id;
         $this->event_version = $event_version;
         $this->aggregate_id = $aggregate_id;

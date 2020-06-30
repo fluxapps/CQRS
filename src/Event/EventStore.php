@@ -16,14 +16,16 @@ use ILIAS\Data\UUID\Factory;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-abstract class EventStore {
+abstract class EventStore
+{
 
     /**
      * @param DomainEvents $events
      *
      * @return void
      */
-    public function commit(DomainEvents $events) : void {
+    public function commit(DomainEvents $events) : void
+    {
         $uuid_factory = new Factory();
 
         /** @var AbstractDomainEvent $event */
@@ -39,7 +41,8 @@ abstract class EventStore {
                 $event->getOccurredOn(),
                 $event->getInitiatingUserId(),
                 $event->getEventBody(),
-                get_class($event));
+                get_class($event)
+            );
 
             $stored_event->create();
         }
@@ -50,7 +53,8 @@ abstract class EventStore {
      *
      * @return DomainEvents
      */
-    public function getAggregateHistoryFor(string $id): DomainEvents {
+    public function getAggregateHistoryFor(string $id) : DomainEvents
+    {
         global $DIC;
 
         $sql = sprintf(
@@ -75,7 +79,8 @@ abstract class EventStore {
                 $row['aggregate_id'],
                 intval($row['initiating_user_id']),
                 new ilDateTime($row['occurred_on']),
-                $row['event_body']);
+                $row['event_body']
+            );
             $event_stream->addEvent($event);
         }
 
@@ -87,7 +92,8 @@ abstract class EventStore {
      *
      * @return DomainEvents
      */
-    public function getEventStream(?string $from_id = null) : DomainEvents {
+    public function getEventStream(?string $from_id = null) : DomainEvents
+    {
         global $DIC;
 
         $sql = sprintf('SELECT * FROM %s', $this->getStorageName());
@@ -112,7 +118,8 @@ abstract class EventStore {
                 $row['aggregate_id'],
                 intval($row['initiating_user_id']),
                 new ilDateTime($row['occurred_on']),
-                $row['event_body']);
+                $row['event_body']
+            );
             $event_stream->addEvent($event);
         }
 
@@ -122,7 +129,8 @@ abstract class EventStore {
     /**
      * @return string
      */
-    protected function getStorageName() : string {
+    protected function getStorageName() : string
+    {
         return call_user_func($this->getEventArClass() . '::returnDbTableName');
     }
 
@@ -131,5 +139,5 @@ abstract class EventStore {
      *
      * @return string
      */
-    protected abstract function getEventArClass() : string;
+    abstract protected function getEventArClass() : string;
 }

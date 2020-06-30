@@ -133,8 +133,7 @@ abstract class AbstractDomainEvent implements DomainEvent
         $restored = new static($aggregate_id, $occurred_on, $initiating_user_id);
         $restored->event_id = $event_id;
 
-        if (static::getEventVersion() < $event_version)
-        {
+        if (static::getEventVersion() < $event_version) {
             throw new CQRSException('Event store contains future versions of Events, ILIAS update necessary');
         }
 
@@ -151,8 +150,7 @@ abstract class AbstractDomainEvent implements DomainEvent
     {
         if (static::getEventVersion() === $event_version) {
             $this->restoreEventBody($event_body);
-        }
-        else {
+        } else {
             $this->restoreOldEventBody($event_body, $event_version);
         }
     }
@@ -165,7 +163,8 @@ abstract class AbstractDomainEvent implements DomainEvent
     /**
      * @return DomainEvent
      */
-    protected function restoreOldEventBody(string $old_event_body, int $old_version) : DomainEvent {
+    protected function restoreOldEventBody(string $old_event_body, int $old_version) : DomainEvent
+    {
         throw new CQRSException("Used ILIAS not compatible with available EventStore");
     }
 }

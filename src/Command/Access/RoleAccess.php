@@ -13,7 +13,8 @@ use srag\CQRS\Command\CommandContract;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-class RoleAccess implements CommandAccessContract {
+class RoleAccess implements CommandAccessContract
+{
     /**
      * @var int[]
      */
@@ -22,7 +23,8 @@ class RoleAccess implements CommandAccessContract {
     /**
      * @param array $roles  Roles that are allowed to perform command
      */
-    public function __create(array $roles) {
+    public function __create(array $roles)
+    {
         $this->allowed_roles = $roles;
     }
     
@@ -30,7 +32,7 @@ class RoleAccess implements CommandAccessContract {
      * {@inheritDoc}
      * @see \srag\CQRS\Command\Access\CommandAccessContract::canIssueCommand()
      */
-    public function canIssueCommand(CommandContract $command): bool
+    public function canIssueCommand(CommandContract $command) : bool
     {
         global $DIC;
         

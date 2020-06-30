@@ -15,14 +15,15 @@ use JsonSerializable;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-interface IsRevisable {
-	/**
-	 * @return RevisionId revision id of object
-	 */
-	public function getRevisionId(): ?RevisionId;
+interface IsRevisable
+{
+    /**
+     * @return RevisionId revision id of object
+     */
+    public function getRevisionId() : ?RevisionId;
 
-	/**
-	 * @param RevisionId $id
-	 */
-	public function setRevisionId(RevisionId $id, int $user_id);
+    /**
+     * @param RevisionId $id
+     */
+    public function setRevisionId(RevisionId $id, int $user_id);
 }

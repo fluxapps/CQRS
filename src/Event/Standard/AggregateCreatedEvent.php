@@ -16,12 +16,13 @@ use ilDateTime;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-class AggregateCreatedEvent extends AbstractDomainEvent {
+class AggregateCreatedEvent extends AbstractDomainEvent
+{
 
     /**
      * @var array
      */
-    protected  $additional_data;
+    protected $additional_data;
 
     /**
      * @param string $aggregate_id
@@ -29,7 +30,8 @@ class AggregateCreatedEvent extends AbstractDomainEvent {
      * @param int $initiating_user_id
      * @param array $additional_aata
      */
-    public function __construct(string $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id, array $additional_aata = null) {
+    public function __construct(string $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id, array $additional_aata = null)
+    {
         $this->additional_data = $additional_aata;
 
         parent::__construct($aggregate_id, $occurred_on, $initiating_user_id);
@@ -38,7 +40,8 @@ class AggregateCreatedEvent extends AbstractDomainEvent {
     /**
      * @return array
      */
-    public function getAdditionalData() : array {
+    public function getAdditionalData() : array
+    {
         return $this->additional_data;
     }
 
@@ -46,7 +49,7 @@ class AggregateCreatedEvent extends AbstractDomainEvent {
      * {@inheritDoc}
      * @see \srag\CQRS\Event\AbstractDomainEvent::getEventBody()
      */
-    public function getEventBody(): string
+    public function getEventBody() : string
     {
         return json_encode($this->additional_data);
     }
@@ -55,7 +58,7 @@ class AggregateCreatedEvent extends AbstractDomainEvent {
      * {@inheritDoc}
      * @see \srag\CQRS\Event\AbstractDomainEvent::restoreEventBody()
      */
-    protected function restoreEventBody(string $event_body): void
+    protected function restoreEventBody(string $event_body) : void
     {
         $this->additional_data = AbstractValueObject::deserialize($event_body);
     }
@@ -63,7 +66,7 @@ class AggregateCreatedEvent extends AbstractDomainEvent {
     /**
      * @return int
      */
-    public static function getEventVersion(): int
+    public static function getEventVersion() : int
     {
         // initial version 1
         return 1;

@@ -12,6 +12,7 @@ use ILIAS\Data\Result;
  * Command Handler is the place where a command is being dispatched
  * and handled.
  */
-Interface CommandHandlerContract {
-	public function handle(CommandContract $command) : Result;
+interface CommandHandlerContract
+{
+    public function handle(CommandContract $command) : Result;
 }

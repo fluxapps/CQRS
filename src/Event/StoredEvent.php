@@ -12,45 +12,46 @@ namespace srag\CQRS\Event;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-interface StoredEvent {
-
-	/**
-	 * @return string
-	 */
-	static function returnDbTableName();
-
-	/**
-	 * @return int
-	 */
-	public function getEventId() : int;
+interface StoredEvent
+{
 
     /**
      * @return string
      */
-	public function getAggregateId() : string;
+    public static function returnDbTableName();
 
-	/**
-	 * @return string
-	 */
-	public function getEventName() : string;
+    /**
+     * @return int
+     */
+    public function getEventId() : int;
 
-	/**
-	 * @return int
-	 */
-	public function getOccuredOn() : int;
+    /**
+     * @return string
+     */
+    public function getAggregateId() : string;
 
-	/**
-	 * @return int
-	 */
-	public function getInitiatingUserId() : int;
+    /**
+     * @return string
+     */
+    public function getEventName() : string;
 
-	/**
-	 * @return string
-	 */
-	public function getEventBody() : string;
+    /**
+     * @return int
+     */
+    public function getOccuredOn() : int;
 
-	/**
-	 * @return void
-	 */
-	public function create() : void;
+    /**
+     * @return int
+     */
+    public function getInitiatingUserId() : int;
+
+    /**
+     * @return string
+     */
+    public function getEventBody() : string;
+
+    /**
+     * @return void
+     */
+    public function create() : void;
 }

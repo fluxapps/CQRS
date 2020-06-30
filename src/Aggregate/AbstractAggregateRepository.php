@@ -18,7 +18,6 @@ use srag\CQRS\Event\EventStore;
  */
 abstract class AbstractAggregateRepository
 {
-
     const CACHE_NAME = "CQRS_REPOSITORY_CACHE";
     /**
      * @var ilGlobalCache
@@ -36,7 +35,8 @@ abstract class AbstractAggregateRepository
     /**
      * @return AbstractAggregateRepository
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (self::$instances === null) {
             self::$instances = [];
         }
@@ -124,7 +124,7 @@ abstract class AbstractAggregateRepository
     /**
      * @return EventStore
      */
-    protected abstract function getEventStore() : EventStore;
+    abstract protected function getEventStore() : EventStore;
 
 
     /**
@@ -132,5 +132,5 @@ abstract class AbstractAggregateRepository
      *
      * @return AbstractAggregateRoot
      */
-    protected abstract function reconstituteAggregate(DomainEvents $event_history) : AbstractAggregateRoot;
+    abstract protected function reconstituteAggregate(DomainEvents $event_history) : AbstractAggregateRoot;
 }

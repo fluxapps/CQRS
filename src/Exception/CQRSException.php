@@ -16,5 +16,4 @@ use Exception;
  */
 class CQRSException extends Exception
 {
-
 }

@@ -15,7 +15,6 @@ use srag\CQRS\Projection\ValueObjects\ProjectorStatus;
  */
 class LedgerAR extends ActiveRecord
 {
-
     const TABLE_NAME = 'sr_projection_ledger';
 
 

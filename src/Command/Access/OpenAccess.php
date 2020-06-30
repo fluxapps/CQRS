@@ -13,12 +13,13 @@ use srag\CQRS\Command\CommandContract;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-class OpenAccess implements CommandAccessContract {
+class OpenAccess implements CommandAccessContract
+{
     /**
      * {@inheritDoc}
      * @see \srag\CQRS\Command\Access\CommandAccessContract::canIssueCommand()
      */
-    public function canIssueCommand(CommandContract $command): bool
+    public function canIssueCommand(CommandContract $command) : bool
     {
         return true;
     }

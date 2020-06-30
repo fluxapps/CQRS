@@ -11,18 +11,19 @@ namespace srag\CQRS\Event;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-interface DomainEventSubscriber {
+interface DomainEventSubscriber
+{
 
-	/**
-	 * @param DomainEvent $aDomainEvent
-	 */
-	public function handle($aDomainEvent) : void;
+    /**
+     * @param DomainEvent $aDomainEvent
+     */
+    public function handle($aDomainEvent) : void;
 
 
-	/**
-	 * @param DomainEvent $aDomainEvent
-	 *
-	 * @return bool
-	 */
-	public function isSubscribedTo($aDomainEvent) : bool;
+    /**
+     * @param DomainEvent $aDomainEvent
+     *
+     * @return bool
+     */
+    public function isSubscribedTo($aDomainEvent) : bool;
 }

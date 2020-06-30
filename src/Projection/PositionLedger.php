@@ -13,7 +13,6 @@ use srag\CQRS\Projection\ValueObjects\ProjectorPosition;
  */
 interface PositionLedger
 {
-
     public function store(ProjectorPosition $position) : void;
 
 

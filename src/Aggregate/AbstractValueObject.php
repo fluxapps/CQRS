@@ -13,14 +13,17 @@ use JsonSerializable;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-abstract class AbstractValueObject implements JsonSerializable {
-	const VAR_CLASSNAME = "avo_class_name";
+abstract class AbstractValueObject implements JsonSerializable
+{
+    const VAR_CLASSNAME = "avo_class_name";
 
 
     /**
      * AbstractValueObject constructor.
      */
-    protected function __construct() { }
+    protected function __construct()
+    {
+    }
 
 
     /**
@@ -29,7 +32,7 @@ abstract class AbstractValueObject implements JsonSerializable {
      * @param AbstractValueObject $other
      * @return bool
      */
-    function equals(AbstractValueObject $other) : bool
+    public function equals(AbstractValueObject $other) : bool
     {
         return $this->jsonSerialize() == $other->jsonSerialize();
     }
@@ -58,45 +61,47 @@ abstract class AbstractValueObject implements JsonSerializable {
         return $first->equals($second);
     }
 
-	/**
-	 * Specify data which should be serialized to JSON
-	 *
-	 * @link  https://php.net/manual/en/jsonserializable.jsonserialize.php
-	 * @return mixed data which can be serialized by <b>json_encode</b>,
-	 * which is a value of any type other than a resource.
-	 * @since 5.4.0
-	 */
-	public function jsonSerialize() {
-	    $json = [];
-		$vars = get_object_vars($this);
+    /**
+     * Specify data which should be serialized to JSON
+     *
+     * @link  https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        $json = [];
+        $vars = get_object_vars($this);
         foreach ($vars as $key => $var) {
             $json[$key] = $this->sleep($key, $var) ?: $var;
-		}
-		$json[self::VAR_CLASSNAME] = get_called_class();
-		return $json;
-	}
+        }
+        $json[self::VAR_CLASSNAME] = get_called_class();
+        return $json;
+    }
 
-	/**
-	 * @param $field_name
-	 *
-	 * @param $field_value
-	 *
-	 * @return mixed
-	 */
-	protected function sleep($field_name, $field_value)
-	{
-	    return $field_value instanceof AbstractValueObject ? $field_value->jsonSerialize() : null;
-	}
+    /**
+     * @param $field_name
+     *
+     * @param $field_value
+     *
+     * @return mixed
+     */
+    protected function sleep($field_name, $field_value)
+    {
+        return $field_value instanceof AbstractValueObject ? $field_value->jsonSerialize() : null;
+    }
 
     /**
      * @return string
      */
-	public function serialize() : string
+    public function serialize() : string
     {
         return json_encode($this->jsonSerialize());
     }
 
-    public static function deserialize(?string $data) {
+    public static function deserialize(?string $data)
+    {
         if ($data === null) {
             return null;
         }
@@ -110,25 +115,25 @@ abstract class AbstractValueObject implements JsonSerializable {
         return self::createFromArray($data_array);
     }
 
-    public static function createFromArray(?array $data) {
+    public static function createFromArray(?array $data)
+    {
         if (is_null($data)) {
             return null;
         }
 
-        if (array_key_exists(self::VAR_CLASSNAME, $data))  {
+        if (array_key_exists(self::VAR_CLASSNAME, $data)) {
             /** @var AbstractValueObject $object */
             $object = new $data[self::VAR_CLASSNAME]();
 
-            foreach ($data as $key=>$value) {
+            foreach ($data as $key => $value) {
                 if (!($key === self::VAR_CLASSNAME)) {
                     $object->$key = is_array($value) ? self::createFromArray($value) : $value;
                 }
             }
 
             return $object;
-        }
-        else {
-            foreach ($data as $key=>$value) {
+        } else {
+            foreach ($data as $key => $value) {
                 if (is_array($value)) {
                     $data[$key] = self::createFromArray($value);
                 }

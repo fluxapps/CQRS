@@ -13,7 +13,8 @@ use srag\CQRS\Command\Access\CommandAccessContract;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-class CommandConfiguration {
+class CommandConfiguration
+{
     /**
      * @var string
      */
@@ -34,7 +35,8 @@ class CommandConfiguration {
      * @param CommandHandlerContract $handler
      * @param CommandAccessContract $access
      */
-    public function __construct(string $class, CommandHandlerContract $handler, CommandAccessContract $access) {
+    public function __construct(string $class, CommandHandlerContract $handler, CommandAccessContract $access)
+    {
         $this->class = $class;
         $this->handler = $handler;
         $this->access = $access;
@@ -43,21 +45,24 @@ class CommandConfiguration {
     /**
      * @return string
      */
-    public function getClass() : string {
+    public function getClass() : string
+    {
         return $this->class;
     }
     
     /**
      * @return CommandHandlerContract
      */
-    public function getHandler() : CommandHandlerContract {
+    public function getHandler() : CommandHandlerContract
+    {
         return $this->handler;
     }
     
     /**
      * @return CommandAccessContract
      */
-    public function getAccess() : CommandAccessContract {
+    public function getAccess() : CommandAccessContract
+    {
         return $this->access;
     }
 }

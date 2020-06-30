@@ -12,15 +12,17 @@ namespace srag\CQRS\Command;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-abstract class AbstractCommand implements CommandContract {
-	/**
-	 * @var int
-	 */
-	protected $issuing_user_id;
+abstract class AbstractCommand implements CommandContract
+{
+    /**
+     * @var int
+     */
+    protected $issuing_user_id;
 
-	public function __construct(int $issuing_user_id) {
-		$this->issuing_user_id = $issuing_user_id;
-	}
+    public function __construct(int $issuing_user_id)
+    {
+        $this->issuing_user_id = $issuing_user_id;
+    }
 
 
     /**

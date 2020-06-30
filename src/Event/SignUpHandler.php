@@ -11,16 +11,17 @@ namespace srag\CQRS\Event;
  * @author Martin Studer <ms@studer-raimann.ch>
  * @author Theodor Truffer <tt@studer-raimann.ch>
  */
-interface SignUpHandler {
+interface SignUpHandler
+{
 
-	/**
-	 * EventSignUpHandler constructor.
-	 */
-	public function __construct();
+    /**
+     * EventSignUpHandler constructor.
+     */
+    public function __construct();
 
 
-	/**
-	 * @param $command
-	 */
-	public function handle($command): void;
+    /**
+     * @param $command
+     */
+    public function handle($command) : void;
 }

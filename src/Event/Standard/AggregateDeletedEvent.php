@@ -15,13 +15,15 @@ use ilDateTime;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-class AggregateDeletedEvent extends AbstractDomainEvent {
+class AggregateDeletedEvent extends AbstractDomainEvent
+{
     /**
      * @param string $aggregate_id
      * @param ilDateTime $occurred_on
      * @param int $initiating_user_id
      */
-    public function __construct(string $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id) {
+    public function __construct(string $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id)
+    {
         parent::__construct($aggregate_id, $occurred_on, $initiating_user_id);
     }
 
@@ -29,7 +31,7 @@ class AggregateDeletedEvent extends AbstractDomainEvent {
      * {@inheritDoc}
      * @see \srag\CQRS\Event\AbstractDomainEvent::getEventBody()
      */
-    public function getEventBody(): string
+    public function getEventBody() : string
     {
         //no additional parameters
         return '';
@@ -39,7 +41,7 @@ class AggregateDeletedEvent extends AbstractDomainEvent {
      * {@inheritDoc}
      * @see \srag\CQRS\Event\AbstractDomainEvent::restoreEventBody()
      */
-    protected function restoreEventBody(string $event_body): void
+    protected function restoreEventBody(string $event_body) : void
     {
         //no additional parameters
     }
@@ -47,7 +49,7 @@ class AggregateDeletedEvent extends AbstractDomainEvent {
     /**
      * @return int
      */
-    public static function getEventVersion(): int
+    public static function getEventVersion() : int
     {
         // initial version 1
         return 1;

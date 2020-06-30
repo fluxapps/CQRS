@@ -16,7 +16,8 @@ use srag\CQRS\Event\AbstractDomainEvent;
  * @package srag/asq
  * @author  Adrian Lüthi <al@studer-raimann.ch>
  */
-class AggregateRevisionCreatedEvent extends AbstractDomainEvent {
+class AggregateRevisionCreatedEvent extends AbstractDomainEvent
+{
     /**
      * @var RevisionId
      */
@@ -30,7 +31,8 @@ class AggregateRevisionCreatedEvent extends AbstractDomainEvent {
      * @param int $initiating_user_id
      * @param RevisionId $revision_id
      */
-    public function __construct(string $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id, RevisionId $revision_id = null) {
+    public function __construct(string $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id, RevisionId $revision_id = null)
+    {
         $this->revision_id = $revision_id;
 
         parent::__construct($aggregate_id, $occurred_on, $initiating_user_id);
@@ -39,7 +41,8 @@ class AggregateRevisionCreatedEvent extends AbstractDomainEvent {
     /**
      * @return string
      */
-    public function getRevisionId(): RevisionId {
+    public function getRevisionId() : RevisionId
+    {
         return $this->revision_id;
     }
 
@@ -47,7 +50,7 @@ class AggregateRevisionCreatedEvent extends AbstractDomainEvent {
      * {@inheritDoc}
      * @see \srag\CQRS\Event\AbstractDomainEvent::getEventBody()
      */
-    public function getEventBody(): string
+    public function getEventBody() : string
     {
         return json_encode($this->revision_id);
     }
@@ -55,14 +58,15 @@ class AggregateRevisionCreatedEvent extends AbstractDomainEvent {
     /**
      * @param string $json_data
      */
-    public function restoreEventBody(string $json_data) : void {
+    public function restoreEventBody(string $json_data) : void
+    {
         $this->revision_id = RevisionId::deserialize($json_data);
     }
 
     /**
      * @return int
      */
-    public static function getEventVersion(): int
+    public static function getEventVersion() : int
     {
         // initial version 1
         return 1;

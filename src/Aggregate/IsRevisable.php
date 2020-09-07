@@ -2,8 +2,6 @@
 
 namespace srag\CQRS\Aggregate;
 
-use JsonSerializable;
-
 /**
  * Interface IsRevisable
  *

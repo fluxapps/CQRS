@@ -42,7 +42,7 @@ abstract class AbstractAggregateRepository
         }
 
         $class_name = get_called_class();
-        if (self::$instances[$class_name] === null) {
+        if (!array_key_exists($class_name, self::$instances)) {
             self::$instances[$class_name] = new $class_name();
         }
 

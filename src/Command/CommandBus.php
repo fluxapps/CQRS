@@ -2,7 +2,6 @@
 
 namespace srag\CQRS\Command;
 
-use DomainException;
 use ILIAS\Data\Result;
 use ILIAS\Data\Result\Error;
 use srag\CQRS\Exception\CQRSException;
@@ -42,14 +41,14 @@ class CommandBus implements CommandBusContract
     public function handle(CommandContract $command) : Result
     {
         $class = get_class($command);
-        
+
         if (!array_key_exists($class, $this->command_handler_map)) {
             return new Error(new CQRSException(sprintf('No handler defined for command: %s', $class)));
         }
-        
+
         /** @var $config CommandConfiguration */
         $config = $this->command_handler_map[$class];
-        
+
         foreach ($this->middlewares as $middleware) {
             $command = $middleware->handle($command);
         }
@@ -74,7 +73,7 @@ class CommandBus implements CommandBusContract
     {
         $this->middlewares[] = $middleware;
     }
-    
+
     /**
      * @param CommandHandlerContract $handler
      * @param string $command_class

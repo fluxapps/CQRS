@@ -2,10 +2,9 @@
 
 namespace srag\CQRS\Projection\Persistence;
 
-use ilDBInterface;
-use srag\CQRS\Projection\Persistence\ActiveRecord\LedgerAR;
 use srag\CQRS\Projection\PositionLedger;
 use srag\CQRS\Projection\Projector;
+use srag\CQRS\Projection\Persistence\ActiveRecord\LedgerAR;
 use srag\CQRS\Projection\ValueObjects\ProjectorPosition;
 
 /**

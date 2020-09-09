@@ -6,6 +6,7 @@ namespace srag\CQRS\Event;
 use srag\CQRS\Exception\CQRSException;
 use ilDateTime;
 use ILIAS\Data\UUID\Factory;
+use ILIAS\Data\UUID\Uuid;
 
 /**
  * Abstract Class EventStore
@@ -49,18 +50,18 @@ abstract class EventStore
     }
 
     /**
-     * @param string $id
+     * @param Uuid $id
      *
      * @return DomainEvents
      */
-    public function getAggregateHistoryFor(string $id) : DomainEvents
+    public function getAggregateHistoryFor(Uuid $id) : DomainEvents
     {
         global $DIC;
 
         $sql = sprintf(
             'SELECT * FROM %s where aggregate_id = %s',
             $this->getStorageName(),
-            $DIC->database()->quote($id, 'string')
+            $DIC->database()->quote($id->toString(), 'string')
         );
 
         $res = $DIC->database()->query($sql);
@@ -70,13 +71,14 @@ abstract class EventStore
         }
 
         $event_stream = new DomainEvents();
+
         while ($row = $DIC->database()->fetchAssoc($res)) {
             /**@var AbstractDomainEvent $event */
             $event_name = $row['event_class'];
             $event = $event_name::restore(
                 $row['event_id'],
                 intval($row['event_version']),
-                $row['aggregate_id'],
+                $id,
                 intval($row['initiating_user_id']),
                 new ilDateTime($row['occurred_on']),
                 $row['event_body']

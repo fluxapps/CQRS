@@ -6,6 +6,7 @@ namespace srag\CQRS\Event\Standard;
 use ilDateTime;
 use srag\CQRS\Aggregate\RevisionId;
 use srag\CQRS\Event\AbstractDomainEvent;
+use ILIAS\Data\UUID\Uuid;
 
 /**
  * Class AggregateRevisionCreatedEvent
@@ -26,12 +27,12 @@ class AggregateRevisionCreatedEvent extends AbstractDomainEvent
     /**
      * Revision Created event constructor
      *
-     * @param string $aggregate_id
+     * @param Uuid $aggregate_id
      * @param ilDateTime $occurred_on
      * @param int $initiating_user_id
      * @param RevisionId $revision_id
      */
-    public function __construct(string $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id, RevisionId $revision_id = null)
+    public function __construct(Uuid $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id, RevisionId $revision_id = null)
     {
         $this->revision_id = $revision_id;
 

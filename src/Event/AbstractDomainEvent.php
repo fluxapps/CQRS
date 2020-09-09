@@ -6,6 +6,7 @@ namespace srag\CQRS\Event;
 use Exception;
 use ilDateTime;
 use srag\CQRS\Exception\CQRSException;
+use ILIAS\Data\UUID\Uuid;
 
 /**
  * Class AbstractDomainEvent
@@ -20,7 +21,7 @@ abstract class AbstractDomainEvent implements DomainEvent
 {
 
     /**
-     * @var string
+     * @var Uuid
      */
     protected $event_id;
     /**
@@ -40,11 +41,11 @@ abstract class AbstractDomainEvent implements DomainEvent
     /**
      * AbstractDomainEvent constructor.
      *
-     * @param string $aggregate_id
+     * @param Uuid $aggregate_id
      * @param ilDateTime     $occurred_on
      * @param int            $initiating_user_id
      */
-    protected function __construct(string $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id)
+    protected function __construct(Uuid $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id)
     {
         $this->aggregate_id = $aggregate_id;
         $this->occurred_on = $occurred_on;
@@ -64,9 +65,9 @@ abstract class AbstractDomainEvent implements DomainEvent
     /**
      * The Aggregate this event belongs to.
      *
-     * @return string
+     * @return Uuid
      */
-    public function getAggregateId() : string
+    public function getAggregateId() : Uuid
     {
         return $this->aggregate_id;
     }
@@ -113,19 +114,19 @@ abstract class AbstractDomainEvent implements DomainEvent
     abstract public static function getEventVersion() : int;
 
     /**
-     * @param string        $event_id
-     * @param string $aggregate_id
-     * @param int            $initiating_user_id
-     * @param ilDateTime     $occurred_on
-     * @param string         $event_body
-     *
-     * @return mixed
-     * @throws Exception
+     * @param string $event_id
+     * @param int $event_version
+     * @param Uuid $aggregate_id
+     * @param int $initiating_user_id
+     * @param ilDateTime $occurred_on
+     * @param string $event_body
+     * @throws CQRSException
+     * @return AbstractDomainEvent
      */
     public static function restore(
         string $event_id,
         int $event_version,
-        string $aggregate_id,
+        Uuid $aggregate_id,
         int $initiating_user_id,
         ilDateTime $occurred_on,
         string $event_body

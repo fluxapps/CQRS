@@ -4,6 +4,7 @@
 namespace srag\CQRS\Event;
 
 use \ilDateTime;
+use ILIAS\Data\UUID\Uuid;
 
 /**
  * Interface DomainEvent
@@ -27,9 +28,9 @@ interface DomainEvent
     /**
      * The Aggregate this event belongs to.
      *
-     * @return string
+     * @return Uuid
      */
-    public function getAggregateId() : string;
+    public function getAggregateId() : Uuid;
 
     /**
      * @return string

@@ -5,6 +5,7 @@ namespace srag\CQRS\Event\Standard;
 
 use srag\CQRS\Event\AbstractDomainEvent;
 use srag\CQRS\Aggregate\AbstractValueObject;
+use ILIAS\Data\UUID\Uuid;
 use ilDateTime;
 
 /**
@@ -25,12 +26,12 @@ class AggregateCreatedEvent extends AbstractDomainEvent
     protected $additional_data;
 
     /**
-     * @param string $aggregate_id
+     * @param Uuid $aggregate_id
      * @param ilDateTime $occurred_on
      * @param int $initiating_user_id
      * @param array $additional_aata
      */
-    public function __construct(string $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id, array $additional_aata = null)
+    public function __construct(Uuid $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id, array $additional_aata = null)
     {
         $this->additional_data = $additional_aata;
 

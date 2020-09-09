@@ -8,6 +8,7 @@ use srag\CQRS\Event\DomainEvents;
 use srag\CQRS\Event\Standard\AggregateCreatedEvent;
 use srag\CQRS\Exception\CQRSException;
 use srag\CQRS\Event\Standard\AggregateDeletedEvent;
+use ILIAS\Data\UUID\Uuid;
 
 /**
  * Class AbstractAggregateRoot
@@ -23,7 +24,7 @@ abstract class AbstractAggregateRoot
     const APPLY_PREFIX = 'apply';
 
     /**
-     * @var string
+     * @var Uuid
      */
     protected $aggregate_id;
 
@@ -129,9 +130,9 @@ abstract class AbstractAggregateRoot
 
 
     /**
-     * @return string
+     * @return Uuid
      */
-    public function getAggregateId() : string
+    public function getAggregateId() : Uuid
     {
         return $this->aggregate_id;
     }

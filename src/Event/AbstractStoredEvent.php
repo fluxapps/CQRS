@@ -6,6 +6,8 @@ use ActiveRecord;
 use ilDateTime;
 use ilDateTimeException;
 use ilException;
+use ILIAS\Data\UUID\Uuid;
+use ILIAS\Data\UUID\Factory;
 
 /**
  * Class AbstractStoredEvent
@@ -46,7 +48,7 @@ abstract class AbstractStoredEvent extends ActiveRecord
      */
     protected $event_version;
     /**
-     * @var string
+     * @var Uuid
      *
      * @con_has_field  true
      * @con_fieldtype  text
@@ -103,20 +105,21 @@ abstract class AbstractStoredEvent extends ActiveRecord
 
 
     /**
-     * Store event data.
+     * Store Event Data
      *
-     * @param string        $event_id
-     * @param string $aggregate_id
-     * @param string         $event_name
-     * @param ilDateTime     $occurred_on
-     * @param int            $initiating_user_id
-     * @param string         $event_body
-     * @param string         $event_class
+     * @param string $event_id
+     * @param int $event_version
+     * @param Uuid $aggregate_id
+     * @param string $event_name
+     * @param ilDateTime $occurred_on
+     * @param int $initiating_user_id
+     * @param string $event_body
+     * @param string $event_class
      */
     public function setEventData(
         string $event_id,
         int $event_version,
-        string $aggregate_id,
+        Uuid $aggregate_id,
         string $event_name,
         ilDateTime $occurred_on,
         int $initiating_user_id,
@@ -221,6 +224,8 @@ abstract class AbstractStoredEvent extends ActiveRecord
     public function sleep($field_name)
     {
         switch ($field_name) {
+            case 'aggregate_id':
+                return $this->aggregate_id->toString();
             case 'occurred_on':
                 return $this->occurred_on->get(IL_CAL_DATETIME);
             default:
@@ -239,6 +244,9 @@ abstract class AbstractStoredEvent extends ActiveRecord
     public function wakeUp($field_name, $field_value)
     {
         switch ($field_name) {
+            case 'aggregate_id':
+                $factory = new Factory();
+                return $factory->fromString($field_value);
             case 'occurred_on':
                 return new ilDateTime($field_value, IL_CAL_DATETIME);
             default:

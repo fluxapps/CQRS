@@ -5,6 +5,7 @@ namespace srag\CQRS\Event\Standard;
 
 use srag\CQRS\Event\AbstractDomainEvent;
 use ilDateTime;
+use ILIAS\Data\UUID\Uuid;
 
 /**
  * Class AggregateDeletedEvent
@@ -18,11 +19,11 @@ use ilDateTime;
 class AggregateDeletedEvent extends AbstractDomainEvent
 {
     /**
-     * @param string $aggregate_id
+     * @param Uuid $aggregate_id
      * @param ilDateTime $occurred_on
      * @param int $initiating_user_id
      */
-    public function __construct(string $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id)
+    public function __construct(Uuid $aggregate_id, ilDateTime $occurred_on, int $initiating_user_id)
     {
         parent::__construct($aggregate_id, $occurred_on, $initiating_user_id);
     }

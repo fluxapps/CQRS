@@ -3,6 +3,7 @@
 
 namespace srag\CQRS\Aggregate;
 
+use ILIAS\Data\UUID\Uuid;
 use ilGlobalCache;
 use srag\CQRS\Event\DomainEvents;
 use srag\CQRS\Event\EventStore;
@@ -73,7 +74,7 @@ abstract class AbstractAggregateRepository
         $aggregate->clearRecordedEvents();
 
         if ($this->has_cache) {
-            self::$cache->set($aggregate->getAggregateId(), $aggregate);
+            self::$cache->set($aggregate->getAggregateId()->toString(), $aggregate);
         }
 
         $this->notifyAboutNewEvents();
@@ -81,11 +82,11 @@ abstract class AbstractAggregateRepository
 
 
     /**
-     * @param string $aggregate_id
+     * @param Uuid $aggregate_id
      *
      * @return AbstractAggregateRoot
      */
-    public function getAggregateRootById(string $aggregate_id) : AbstractAggregateRoot
+    public function getAggregateRootById(Uuid $aggregate_id) : AbstractAggregateRoot
     {
         if (false && $this->has_cache) {
             return $this->getFromCache($aggregate_id);
@@ -96,13 +97,13 @@ abstract class AbstractAggregateRepository
 
 
     /**
-     * @param string $aggregate_id
+     * @param Uuid $aggregate_id
      *
      * @return AbstractAggregateRoot
      */
-    private function getFromCache(string $aggregate_id)
+    private function getFromCache(Uuid $aggregate_id)
     {
-        $cache_key = $aggregate_id->getId();
+        $cache_key = $aggregate_id->toString();
         $aggregate = self::$cache->get($cache_key);
         if ($aggregate === null) {
             $aggregate = $this->reconstituteAggregate($this->getEventStore()->getAggregateHistoryFor($aggregate_id));

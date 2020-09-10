@@ -3,6 +3,7 @@
 namespace srag\CQRS\Aggregate;
 
 use JsonSerializable;
+use ILIAS\Data\UUID\Uuid;
 
 /**
  * Class AbstractValueObject
@@ -74,7 +75,7 @@ abstract class AbstractValueObject implements JsonSerializable
         $json = [];
         $vars = get_object_vars($this);
         foreach ($vars as $key => $var) {
-            $json[$key] = $this->sleep($key, $var) ?: $var;
+            $json[$key] = $this->sleep($var);
         }
         $json[self::VAR_CLASSNAME] = get_called_class();
         return $json;
@@ -87,9 +88,16 @@ abstract class AbstractValueObject implements JsonSerializable
      *
      * @return mixed
      */
-    protected function sleep($field_name, $field_value)
+    protected function sleep($field_value)
     {
-        return $field_value instanceof AbstractValueObject ? $field_value->jsonSerialize() : null;
+        if ($field_value instanceof AbstractValueObject) {
+            return $field_value->jsonSerialize();
+        }
+        else if ($field_value instanceof Uuid) {
+            return $field_value->toString();
+        }
+
+        return $field_value;
     }
 
     /**
@@ -127,7 +135,12 @@ abstract class AbstractValueObject implements JsonSerializable
 
             foreach ($data as $key => $value) {
                 if (!($key === self::VAR_CLASSNAME)) {
-                    $object->$key = is_array($value) ? self::createFromArray($value) : $value;
+                    if (is_array($value)) {
+                        $object->$key = self::createFromArray($value);
+                    }
+                    else {
+                        $object->$key = static::deserializeValue($key, $value);
+                    }
                 }
             }
 
@@ -141,5 +154,15 @@ abstract class AbstractValueObject implements JsonSerializable
 
             return $data;
         }
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $value
+     */
+    protected static function deserializeValue(string $key, $value)
+    {
+        //virtual method
+        return $value;
     }
 }

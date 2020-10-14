@@ -17,7 +17,7 @@ use ILIAS\Data\UUID\Uuid;
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
-abstract class EventStore
+abstract class EventStore implements IEventStore
 {
 
     /**

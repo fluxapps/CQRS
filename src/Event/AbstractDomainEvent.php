@@ -3,10 +3,9 @@
 
 namespace srag\CQRS\Event;
 
-use Exception;
+use ILIAS\Data\UUID\Uuid;
 use ilDateTime;
 use srag\CQRS\Exception\CQRSException;
-use ILIAS\Data\UUID\Uuid;
 
 /**
  * Class AbstractDomainEvent

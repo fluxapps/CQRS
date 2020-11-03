@@ -6,7 +6,7 @@ namespace srag\CQRS\Aggregate;
 use ILIAS\Data\UUID\Uuid;
 use ilGlobalCache;
 use srag\CQRS\Event\DomainEvents;
-use srag\CQRS\Event\EventStore;
+use srag\CQRS\Event\IEventStore;
 
 /**
  * Class AbstractAggregateRepository
@@ -123,9 +123,9 @@ abstract class AbstractAggregateRepository
     }
 
     /**
-     * @return EventStore
+     * @return IEventStore
      */
-    abstract protected function getEventStore() : EventStore;
+    abstract protected function getEventStore() : IEventStore;
 
 
     /**

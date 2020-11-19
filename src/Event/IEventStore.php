@@ -25,6 +25,12 @@ interface IEventStore
 
     /**
      * @param Uuid $id
+     * @return bool
+     */
+    public function aggregateExists(Uuid $id) : bool;
+
+    /**
+     * @param Uuid $id
      *
      * @return DomainEvents
      */

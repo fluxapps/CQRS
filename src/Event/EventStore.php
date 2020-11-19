@@ -51,6 +51,25 @@ abstract class EventStore implements IEventStore
 
     /**
      * @param Uuid $id
+     * @return bool
+     */
+    public function aggregateExists(Uuid $id) : bool
+    {
+        global $DIC;
+
+        $sql = sprintf(
+            'SELECT Count(*) as count FROM %s where aggregate_id = %s',
+            $this->getStorageName(),
+            $DIC->database()->quote($id->toString(), 'string')
+            );
+
+        $res = $DIC->database()->query($sql);
+
+        return $DIC->database()->fetchAssoc($res)['count'] > 0;
+    }
+
+    /**
+     * @param Uuid $id
      *
      * @return DomainEvents
      */

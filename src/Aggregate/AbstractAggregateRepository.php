@@ -134,4 +134,13 @@ abstract class AbstractAggregateRepository
      * @return AbstractAggregateRoot
      */
     abstract protected function reconstituteAggregate(DomainEvents $event_history) : AbstractAggregateRoot;
+
+    /**
+     * @param Uuid $aggregate_id
+     * @return bool
+     */
+    public function aggregateExists(Uuid $aggregate_id) : bool
+    {
+        return $this->getEventStore()->aggregateExists($aggregate_id);
+    }
 }

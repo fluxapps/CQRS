@@ -47,7 +47,7 @@ abstract class AbstractValueObject implements JsonSerializable
      */
     public static function isNullableEqual(?AbstractValueObject $first, ?AbstractValueObject $second) : bool
     {
-        return self::nullEquals($first, $second) && (is_null($first) || $first->equals($second));
+        return (is_null($first) === is_null($second)) && (is_null($first) || $first->equals($second));
     }
 
     /**
@@ -57,7 +57,7 @@ abstract class AbstractValueObject implements JsonSerializable
      */
     public static function isNullableArrayEqual(array $first, array $second) : bool
     {
-        if (! self::nullEquals($first, $second)) {
+        if (is_null($first) !== is_null($second)) {
             return false;
         }
 
@@ -69,28 +69,6 @@ abstract class AbstractValueObject implements JsonSerializable
             if (! $first[$i]->equals($second[$i])) {
                 return false;
             }
-        }
-
-        return true;
-    }
-
-    /**
-     * @param $first
-     * @param $second
-     * @return bool
-     */
-    private static function nullEquals($first, $second) : bool
-    {
-        if ($first === null) {
-            if ($second === null) {
-                return true; //TODO some theorists say null is not equals null but for our purposes it is equal
-            } else {
-                return false;
-            }
-        }
-
-        if ($second === null) {
-            return false;
         }
 
         return true;

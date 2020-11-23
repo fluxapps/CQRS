@@ -47,6 +47,40 @@ abstract class AbstractValueObject implements JsonSerializable
      */
     public static function isNullableEqual(?AbstractValueObject $first, ?AbstractValueObject $second) : bool
     {
+        return self::nullEquals($first, $second) && (is_null($first) || $first->equals($second));
+    }
+
+    /**
+     * @param AbstractValueObject[] $first
+     * @param AbstractValueObject[] $second
+     * @return bool
+     */
+    public static function isNullableArrayEqual(array $first, array $second) : bool
+    {
+        if (! self::nullEquals($first, $second)) {
+            return false;
+        }
+
+        if (count($first) !== count($second)) {
+            return false;
+        }
+
+        for($i = 0; $i < count($first); $i += 1) {
+            if (! $first[$i]->equals($second[$i])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param $first
+     * @param $second
+     * @return bool
+     */
+    private static function nullEquals($first, $second) : bool
+    {
         if ($first === null) {
             if ($second === null) {
                 return true; //TODO some theorists say null is not equals null but for our purposes it is equal
@@ -59,7 +93,7 @@ abstract class AbstractValueObject implements JsonSerializable
             return false;
         }
 
-        return $first->equals($second);
+        return true;
     }
 
     /**

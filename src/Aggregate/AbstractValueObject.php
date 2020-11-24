@@ -55,10 +55,14 @@ abstract class AbstractValueObject implements JsonSerializable
      * @param AbstractValueObject[] $second
      * @return bool
      */
-    public static function isNullableArrayEqual(array $first, array $second) : bool
+    public static function isNullableArrayEqual(?array $first, ?array $second) : bool
     {
         if (is_null($first) !== is_null($second)) {
             return false;
+        }
+
+        if (is_null($first) && is_null($second)) {
+            return true;
         }
 
         if (count($first) !== count($second)) {

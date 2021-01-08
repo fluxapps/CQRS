@@ -88,7 +88,7 @@ abstract class AbstractAggregateRepository
      */
     public function getAggregateRootById(Uuid $aggregate_id) : AbstractAggregateRoot
     {
-        if (false && $this->has_cache) {
+        if ($this->has_cache) {
             return $this->getFromCache($aggregate_id);
         } else {
             return $this->reconstituteAggregate($this->getEventStore()->getAggregateHistoryFor($aggregate_id));

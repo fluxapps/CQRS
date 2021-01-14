@@ -35,7 +35,7 @@ abstract class AbstractValueObject implements JsonSerializable
      */
     public function equals(AbstractValueObject $other) : bool
     {
-        return $this->jsonSerialize() == $other->jsonSerialize();
+        return $this->jsonSerialize() === $other->jsonSerialize();
     }
 
     /**

@@ -23,44 +23,20 @@ abstract class AbstractAggregateRepository
     /**
      * @var ilGlobalCache
      */
-    private static $cache;
+    private $cache;
     /**
      * @var bool
      */
     private $has_cache = false;
 
     /**
-     * @var AbstractAggregateRepository
-     */
-    private static $instances;
-    /**
-     * @return AbstractAggregateRepository
-     */
-    public static function getInstance()
-    {
-        if (self::$instances === null) {
-            self::$instances = [];
-        }
-
-        $class_name = get_called_class();
-        if (!array_key_exists($class_name, self::$instances)) {
-            self::$instances[$class_name] = new $class_name();
-        }
-
-        return self::$instances[$class_name];
-    }
-
-    /**
      * AbstractEventSourcedAggregateRepository constructor.
      */
     protected function __construct()
     {
-        if (self::$cache === null) {
-            self::$cache = ilGlobalCache::getInstance(self::CACHE_NAME);
-            self::$cache->setActive(true);
-        }
-
-        $this->has_cache = self::$cache !== null && self::$cache->isActive();
+        $this->cache = ilGlobalCache::getInstance(self::CACHE_NAME);
+        $this->cache->setActive(true);
+        $this->has_cache = $this->cache !== null && $this->cache->isActive();
     }
 
 
@@ -74,7 +50,7 @@ abstract class AbstractAggregateRepository
         $aggregate->clearRecordedEvents();
 
         if ($this->has_cache) {
-            self::$cache->set($aggregate->getAggregateId()->toString(), $aggregate);
+            $this->cache->set($aggregate->getAggregateId()->toString(), $aggregate);
         }
 
         $this->notifyAboutNewEvents();
@@ -104,10 +80,10 @@ abstract class AbstractAggregateRepository
     private function getFromCache(Uuid $aggregate_id)
     {
         $cache_key = $aggregate_id->toString();
-        $aggregate = self::$cache->get($cache_key);
+        $aggregate = $this->cache->get($cache_key);
         if ($aggregate === null) {
             $aggregate = $this->reconstituteAggregate($this->getEventStore()->getAggregateHistoryFor($aggregate_id));
-            self::$cache->set($cache_key, $aggregate);
+            $this->cache->set($cache_key, $aggregate);
         }
 
         return $aggregate;
@@ -126,7 +102,6 @@ abstract class AbstractAggregateRepository
      * @return IEventStore
      */
     abstract protected function getEventStore() : IEventStore;
-
 
     /**
      * @param DomainEvents $event_history

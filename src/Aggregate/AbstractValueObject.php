@@ -2,6 +2,8 @@
 
 namespace srag\CQRS\Aggregate;
 
+use DateTimeZone;
+use DateTimeImmutable;
 use JsonSerializable;
 use ILIAS\Data\UUID\Uuid;
 
@@ -162,6 +164,15 @@ abstract class AbstractValueObject implements JsonSerializable
 
             return $object;
         } else {
+            if (array_key_exists('date', $data) &&
+                array_key_exists('timezone_type', $data) &&
+                array_key_exists('timezone', $data)) {
+                return new DateTimeImmutable(
+                    $data['date'],
+                    new DateTimeZone($data['timezone'])
+                );
+            }
+
             foreach ($data as $key => $value) {
                 if (is_array($value)) {
                     $data[$key] = self::createFromArray($value);
